@@ -79,8 +79,6 @@ int main(string titleID, string titleType)
 	// 4. start asking questions and take in input (Zach)
 		// begin loop
 		
-			// start timer 
-		
 			// 1. Ask quiz questions yayyyyyy
 				// maybe storing answers in an array(index is question # and value is answer) 
 				// or map (key is question number, value is answer)
