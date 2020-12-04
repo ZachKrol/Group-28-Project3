@@ -13,53 +13,61 @@ Last Updated: 12/2/2020 10:07pm by ZK
 using namespace std;
 
 // Title is a broad term that includes movies, shorts, tv series, video etc.
-class Title
+struct Title
 {
-private:
 	// These variables are the column headers in the data set from title.basics.tsv.gz (https://www.imdb.com/interfaces/)
 
 	// alphanumeric unique identifier of the title
 	string titleID;
-
 	// the type/format of the title(e.g.movie, short, tvseries, tvepisode, video, etc)
 	string titleType;
-
 	// the more popular title / the title used by the filmmakers on promotional materials at the point of release
 	string primaryTitle;
-
 	// original title, in the original language
 	string originalTitle;
-
 	// 0: non-adult title; 1: adult title
 	bool isAdult;
-
 	// represents the release year of a title.In the case of TV Series, it is the series start year
 	int startYear;
-
 	// TV Series end year.‘\N’ for all other title types
 	int endYear;
-
 	// primary runtime of the title, in minutes
 	int minutes;
-
 	// includes up to three genres associated with the title
-	string genre[]; // I'm gonna look into this one because some titles have varying number of genres... I think a string array works
+	string genre;
 
-public:
 	Title();
 	Title(string titleID, string titleType, string primaryTitle, string originalTitle, 
-		bool isAdult, int startYear, int endYear, int minutes, string genre[]);
+		bool isAdult, int startYear, int endYear, int minutes, string genre);
 };
 
 Title::Title()
 { 
 	// default constructor 
+	titleID = "tt0000000";
+	titleType = "Not Initialized";
+	primaryTitle = "Not Initialized";
+	originalTitle = "Not Initialized";
+	isAdult = 0;
+	startYear = 0;
+	endYear = 0;
+	minutes = 0;
+	genre = "";
 }
 
 Title::Title(string titleID, string titleType, string primaryTitle, string originalTitle,
-	bool isAdult, int startYear, int endYear, int minutes, string genre[])
+	bool isAdult, int startYear, int endYear, int minutes, string genre)
 { 
 	// constructor 
+	this->titleID = titleID;
+	this->titleType = titleType;
+	this->primaryTitle = primaryTitle;
+	this->originalTitle = originalTitle;
+	this->isAdult = isAdult;
+	this->startYear = startYear;
+	this->endYear = endYear;
+	this->minutes = minutes;
+	this->genre = genre;
 }
 
 
