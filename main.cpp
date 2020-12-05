@@ -2,8 +2,7 @@
 Team 28
 Team Members - Elizabeth Gekhtman, Sydney Opyrchal, Zachary Krol
 Project Title - Buzzfeed Quiz Knockoff: Movie Recommender
-
-Last Updated: 12/4/2020 9:07pm by ZK
+Last Updated: 12/4/2020 10:07pm by ZK
 */
 
 #include <iomanip>
@@ -84,13 +83,24 @@ vector<Title> LoadData()
 	if (data.is_open())
 	{
 		string line;
+		int counter = 1;
 
 		// pass over first line of headers
 		getline(data, line);
 
 		// IMPORTANT: adjust for-loop counter to determine number of rows to read
-		for (int i = 0; i < 10000; i++)
+		int loopCounter = 10000;
+		for (int i = 0; i < loopCounter; i++)
 		{
+			// percent loaded
+			int singlePercent = loopCounter / 100;
+			int check = i / singlePercent;
+			if (check == counter)
+			{
+				cout << counter << "%" << endl;
+				counter++;
+			}
+
 			// declare variables to capture data
 			string _titleID;
 			string _titleType;
@@ -173,7 +183,7 @@ vector<Title> LoadData()
 	for (auto iter = titleObjects.begin(); iter != titleObjects.end(); ++iter)
 	{
 		Title temp = *iter;
-		cout << temp.titleID << " " << temp.titleType << " " <<  temp.primaryTitle << " " << temp.originalTitle << " " << 
+		cout << temp.titleID << " " << temp.titleType << " " <<  temp.primaryTitle << " " << temp.originalTitle << " " <<
 			temp.primaryTitle << " " << temp.isAdult << " " << temp.startYear << " " << temp.endYear << " " <<
 			temp.minutes << " " << temp.genre << endl;
 	}
@@ -391,7 +401,7 @@ int main()
 
 	// 4. start asking questions and take in input (Zach)
 		// begin loop
-		
+
 			// 1. Ask quiz questions yayyyyyy
 				// maybe storing answers in an array(index is question # and value is answer) 
 				// or map (key is question number, value is answer)
@@ -399,9 +409,8 @@ int main()
 			// 2. which data structure do you want to use AVL/Map
 			/*
 				get input
-
 				* start timer
-			
+
 				if "AVL"
 					initialize AVL tree (Sydney)<------------------------------------------------------
 					*2a. search function based on answers
@@ -423,7 +432,7 @@ int main()
 
 				// if more than 1 title satisfies the search, randomly select one of them to recommend to the user
 				// or just output a list of the titles
-			
+
 			// end timer and display time for data structure to be initialized and searched through
 
 		// ask if they want to take quiz again
