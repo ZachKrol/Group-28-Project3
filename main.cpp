@@ -120,21 +120,13 @@ vector<Title> LoadData()
 
 			// get title characteristics
 			getline(streamFromLine, _titleID, '\t');
-
 			getline(streamFromLine, _titleType, '\t');
-
 			getline(streamFromLine, _primaryTitle, '\t');
-
 			getline(streamFromLine, _originalTitle, '\t');
-
 			getline(streamFromLine, _isAdult, '\t');
-
 			getline(streamFromLine, _startYear, '\t');
-
 			getline(streamFromLine, _endYear, '\t');
-
 			getline(streamFromLine, _minutes, '\t');
-
 			getline(streamFromLine, _genre, '\t');
 
 			// filter out bad entries and initialize date into objects
@@ -146,7 +138,6 @@ vector<Title> LoadData()
 
 			// throw out all garbage episode titles
 			string episodeCheck = "Episode";
-			// cout << "TESTTTTTT: Primary title first 7: " << _primaryTitle.substr(0, 7) << endl;
 			if (episodeCheck.compare(_primaryTitle.substr(0, 7)) == 0)
 				continue;
 
@@ -388,12 +379,11 @@ int main()
 {
 	// load file title.basics.tsv.gz 
 	// pushback these objects to a vector
-		// This is the vector that will be passed by reference into functions that create the Map and AVL structures
+		// IMPORTANT: This is the vector that will be passed by reference into functions that create the Map and AVL structures
 
 	cout << "Loading Movie Data from IMDB Database..." << endl;
 	vector<Title> titleObjects = LoadData();
 	cout << "Done Loading!" << endl << endl;
-
 
 	// welcome screen
 	cout << "---------------------------------------------------------------------------------------------" << endl << endl;
@@ -409,7 +399,7 @@ int main()
 	while (selection == 1)
 	{
 		cout << "---------------------------------------------------------------------------------------------" << endl << endl;
-
+		
 		cout << "*QUIZ QUESTIONS AND STORING THE ANSWERS WILL GO HERE*" << endl << endl;
 			// maybe storing answers in an array(index is question # and value is answer) 
 			// or map (key is question number, value is answer)
