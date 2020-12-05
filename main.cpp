@@ -169,7 +169,7 @@ vector<Title> LoadData()
 
 	// print data
 	// IMPORTANT: COMMENT THIS OUT IF YOU DON'T WANT IT TO PRINT
-	
+	/*
 	for (auto iter = titleObjects.begin(); iter != titleObjects.end(); ++iter)
 	{
 		Title temp = *iter;
@@ -177,6 +177,7 @@ vector<Title> LoadData()
 			temp.primaryTitle << " " << temp.isAdult << " " << temp.startYear << " " << temp.endYear << " " <<
 			temp.minutes << " " << temp.genre << endl;
 	}
+	*/
 
 	data.close();
 
@@ -192,7 +193,9 @@ int main()
 		// This is the vector that will be passed by reference into functions that create the Map and AVL structures
 		// (stack overflow has an easy way to iterate through vectors using an iterator once inside your functions. lmk if you need help)
 		//DONE
+	cout << "Loading Movie Data from IMDB Database..." << endl;
 	vector<Title> titleObjects = LoadData();
+	cout << "Done Loading!" << endl
 
 	// 3. output welcome screen and selection (Zach)
 
