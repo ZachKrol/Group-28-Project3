@@ -409,43 +409,52 @@ int main()
 	cin.ignore();
 
 	// 4. start asking questions and take in input (Zach)
+	int selection = 1;
 		// begin loop
+	while (selection == 1)
+	{
 
-			// 1. Ask quiz questions yayyyyyy
-				// maybe storing answers in an array(index is question # and value is answer) 
-				// or map (key is question number, value is answer)
+		// 1. Ask quiz questions yayyyyyy
+			// maybe storing answers in an array(index is question # and value is answer) 
+			// or map (key is question number, value is answer)
 
-			// 2. which data structure do you want to use AVL/Map
-			/*
-				get input
-				* start timer
+		// 2. which data structure do you want to use AVL/Map
+		/*
+			get input
+			* start timer
 
-				if "AVL"
-					initialize AVL tree (Sydney)<------------------------------------------------------
-					*2a. search function based on answers
-						----> we should talk about how to do this because i don
-				else if "Map"
-					initialzie Map (Elizabeth)<------------------------------------------------------
-					*2a. search function based on answers
-				else
-					invalid input
-			*/
+			if "AVL"
+				initialize AVL tree (Sydney)<------------------------------------------------------
+				*2a. search function based on answers
+					----> we should talk about how to do this because i don
+			else if "Map"
+				initialzie Map (Elizabeth)<------------------------------------------------------
+				*2a. search function based on answers
+			else
+				invalid input
+		*/
 
-			// *2a. Using the answers, search for titles based on "things" (genres, decades, title etc.)
-				// if certain set of questions are answered, search for certain genre etc.
+		// *2a. Using the answers, search for titles based on "things" (genres, decades, title etc.)
+			// if certain set of questions are answered, search for certain genre etc.
 
-				// ------------NOT SURE YET!----------------
-					// Zach's Idea: I can figure out which things to search for, add them to a container, and pass that container into your functions
-					// It would just be tricky for you all figuring out how to use that container to find titles
-					// ALSO: this is a problem we can solve towards the end or over a zoom
+			// ------------NOT SURE YET!----------------
+				// Zach's Idea: I can figure out which things to search for, add them to a container, and pass that container into your functions
+				// It would just be tricky for you all figuring out how to use that container to find titles
+				// ALSO: this is a problem we can solve towards the end or over a zoom
 
-				// if more than 1 title satisfies the search, randomly select one of them to recommend to the user
-				// or just output a list of the titles
+			// if more than 1 title satisfies the search, randomly select one of them to recommend to the user
+			// or just output a list of the titles
 
-			// end timer and display time for data structure to be initialized and searched through
+		// end timer and display time for data structure to be initialized and searched through
 
-		// ask if they want to take quiz again
-		// end loop
+	// ask if they want to take quiz again
+	cout << "Enter \"1\" to take the quiz again" << endl;
+	cin >> selection;
 
+	// end loop
+	}
+
+	cout << endl << "Enjoy your viewing experience!" << endl;
+	
 	return 0;
 }
