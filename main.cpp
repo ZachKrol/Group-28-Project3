@@ -395,10 +395,18 @@ int main()
 		//DONE
 	cout << "Loading Movie Data from IMDB Database..." << endl;
 	vector<Title> titleObjects = LoadData();
-	cout << "Done Loading!" << endl;
+	cout << "Done Loading!" << endl << endl;
 
 	// 3. output welcome screen and selection (Zach)
+	cout << "---------------------------------------------------------------------------------------------" << endl;
+	cout << "Welcome to our Movie Recommending Quiz!" << endl << endl;
+	cout << "We gathered titles (movies, tv-shows, videos, etc.) from the IMDB Database and " << endl;
+	cout << "we want to recommend a title selection for you after answering a simple set of questions!" << endl << endl;
+	cout << "Press ENTER to begin. . ." << endl;
+	cout << "---------------------------------------------------------------------------------------------" << endl;
 
+	cin.ignore();
+	
 	// 4. start asking questions and take in input (Zach)
 		// begin loop
 
