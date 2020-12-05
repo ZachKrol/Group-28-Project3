@@ -397,6 +397,7 @@ int main()
 	vector<Title> titleObjects = LoadData();
 	cout << "Done Loading!" << endl << endl;
 
+
 	// 3. output welcome screen and selection (Zach)
 	cout << "---------------------------------------------------------------------------------------------" << endl;
 	cout << "Welcome to our Movie Recommending Quiz!" << endl << endl;
@@ -406,7 +407,7 @@ int main()
 	cout << "---------------------------------------------------------------------------------------------" << endl;
 
 	cin.ignore();
-	
+
 	// 4. start asking questions and take in input (Zach)
 		// begin loop
 
