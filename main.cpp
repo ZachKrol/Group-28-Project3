@@ -2,7 +2,7 @@
 Team 28
 Team Members - Elizabeth Gekhtman, Sydney Opyrchal, Zachary Krol
 Project Title - Buzzfeed Quiz Knockoff: Movie Recommender
-Last Updated: 12/4/2020 10:07pm by ZK
+Last Updated: 12/4/2020 11:52pm by ZK
 */
 
 #include <iomanip>
@@ -386,55 +386,83 @@ void select(Node* root, int id)
 
 int main()
 {
-	// 1. load file title.basics.tsv.gz (Zach)
-		// DONE
-	// 2. read through file rows initializing Title objects for each row (Zach)
-		// pushback these objects to a vector. 
+	// load file title.basics.tsv.gz 
+	// pushback these objects to a vector
 		// This is the vector that will be passed by reference into functions that create the Map and AVL structures
-		// (stack overflow has an easy way to iterate through vectors using an iterator once inside your functions. lmk if you need help)
-		//DONE
+
 	cout << "Loading Movie Data from IMDB Database..." << endl;
 	vector<Title> titleObjects = LoadData();
 	cout << "Done Loading!" << endl << endl;
 
 
-	// 3. output welcome screen and selection (Zach)
-	cout << "---------------------------------------------------------------------------------------------" << endl;
+	// welcome screen
+	cout << "---------------------------------------------------------------------------------------------" << endl << endl;
 	cout << "Welcome to our Movie Recommending Quiz!" << endl << endl;
 	cout << "We gathered titles (movies, tv-shows, videos, etc.) from the IMDB Database and " << endl;
 	cout << "we want to recommend a title selection for you after answering a simple set of questions!" << endl << endl;
 	cout << "Press ENTER to begin. . ." << endl;
-	cout << "---------------------------------------------------------------------------------------------" << endl;
 
 	cin.ignore();
 
-	// 4. start asking questions and take in input (Zach)
+	// QUIZ LOOP
 	int selection = 1;
-		// begin loop
 	while (selection == 1)
 	{
+		cout << "---------------------------------------------------------------------------------------------" << endl << endl;
 
-		// 1. Ask quiz questions yayyyyyy
+		cout << "*QUIZ QUESTIONS AND STORING THE ANSWERS WILL GO HERE*" << endl << endl;
 			// maybe storing answers in an array(index is question # and value is answer) 
 			// or map (key is question number, value is answer)
 
-		// 2. which data structure do you want to use AVL/Map
-		/*
-			get input
-			* start timer
+		// choose data structure to use
+		cout << "Which data structure do you want to use to store and search for titles?" << endl;
+		cout << "1. Map" << endl;
+		cout << "2. AVL Tree" << endl;
 
-			if "AVL"
-				initialize AVL tree (Sydney)<------------------------------------------------------
-				*2a. search function based on answers
-					----> we should talk about how to do this because i don
-			else if "Map"
-				initialzie Map (Elizabeth)<------------------------------------------------------
-				*2a. search function based on answers
+		int dataChoice;
+		while (true)
+		{
+			// this code prevents infinite loop on invalid char input. 
+			// inspired from https://stackoverflow.com/questions/21844160/why-does-my-program-have-an-infinite-loop-when-i-enter-in-a-character
+			if (!(cin >> dataChoice))
+			{
+				cin.clear(); // clears the error state
+				cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // remove the bad input from the buffer
+				cout << "Invalid input. Try Again." << endl;
+				continue;
+			}
 			else
-				invalid input
-		*/
+			{
+				if (dataChoice == 1)
+				{
+					// Start Timer (Zach)
 
-		// *2a. Using the answers, search for titles based on "things" (genres, decades, title etc.)
+					// Map Initialize Function (Elizabeth) <------------------------------------------
+
+					// Map *Search* Function (Elizabeth) <------------------------------------------
+
+					break;
+				}
+				else if (dataChoice == 2)
+				{
+					// Start Timer (Zach)
+
+					// AVL Tree Initialize Function (Sydney) <------------------------------------------
+
+					// AVL Tree *Search* Function (Sydney) <------------------------------------------
+
+					break;
+				}
+				else
+				{
+					cout << "Invalid input. Try Again." << endl;
+					continue;
+				}
+			}
+		}
+
+
+		// *SEARCH* Using the answers, search for titles based on "things" (genres, decades, title etc.)
 			// if certain set of questions are answered, search for certain genre etc.
 
 			// ------------NOT SURE YET!----------------
@@ -445,16 +473,23 @@ int main()
 			// if more than 1 title satisfies the search, randomly select one of them to recommend to the user
 			// or just output a list of the titles
 
-		// end timer and display time for data structure to be initialized and searched through
 
-	// ask if they want to take quiz again
-	cout << "Enter \"1\" to take the quiz again" << endl;
-	cin >> selection;
+		// output search result
+		cout << endl << "The title we have recommended for you is: " << "*REPLACE THIS WITH SEARCH RESULT*" << endl << endl;
 
-	// end loop
+		// end timer and display time
+		if (dataChoice == 1)
+			cout << "Time it took to store and search data using Map: " << "*INPUT TIMER RESULT HERE*" << endl << endl;
+		if (dataChoice == 2)
+			cout << "Time it took to store and search data using AVL Tree: " << "*INPUT TIMER RESULT HERE*" << endl << endl;
+
+		// ask if they want to take quiz again
+		cout << "Enter \"1\" to take the quiz again" << endl;
+		cin >> selection;
+		cout << endl;
 	}
 
-	cout << endl << "Enjoy your viewing experience!" << endl;
-	
+	cout << "Enjoy your viewing experience!" << endl;
+
 	return 0;
 }
