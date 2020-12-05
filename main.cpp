@@ -195,7 +195,7 @@ int main()
 		//DONE
 	cout << "Loading Movie Data from IMDB Database..." << endl;
 	vector<Title> titleObjects = LoadData();
-	cout << "Done Loading!" << endl
+	cout << "Done Loading!" << endl;
 
 	// 3. output welcome screen and selection (Zach)
 
