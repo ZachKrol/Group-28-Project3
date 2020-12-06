@@ -76,12 +76,13 @@ Title::Title(int titleID, string titleType, string primaryTitle, string original
 // Load Data function. returns vector of title objects
 vector<Title> LoadData()
 {
-    ifstream data("data.tsv");
+    ifstream data("/users/Sydney/Downloads/title.basics.tsv");
 
     vector<Title> titleObjects;
 
     if (data.is_open())
     {
+        
         string line;
         int counter = 1;
 
@@ -165,7 +166,9 @@ vector<Title> LoadData()
 
             // pushback to vector of objects
             titleObjects.push_back(t);
+            
         }
+        return titleObjects;
     }
 
     // print data
@@ -271,7 +274,7 @@ Node* insert(Node* root, Title tt)
     // if root is null, the recursion is done and we can return
     if (root == NULL)
     {
-        cout << "successful" << endl;
+        //cout << "successful" << endl;
         return new Node(tt);
     }
     //check if node needs to go in left subtree
@@ -289,7 +292,7 @@ Node* insert(Node* root, Title tt)
     //check if node is already in the tree
     else if ((tt.titleID) == root->t.titleID)
     {
-        cout << "unsuccessful" << endl;
+        //cout << "unsuccessful" << endl;
         return root;
     }
 
@@ -303,7 +306,7 @@ Node* insert(Node* root, Title tt)
     //Left Right Rotation
     if (bf > 1 && tt.titleID > root->left->t.titleID)
     {
-        return rotateLeftRight(root);
+        return rotateRight(root);
     }
     //Right Right Rotation
     if (bf < -1 && tt.titleID > root->right->t.titleID)
@@ -313,7 +316,7 @@ Node* insert(Node* root, Title tt)
     //Right Left Rotation
     if (bf < -1 && tt.titleID < root->right->t.titleID)
     {
-        return rotateRightLeft(root);
+        return rotateLeft(root);
     }
     //Left Left Rotation
     // if the balance factor is more than 1 and the ID needs to go in the
@@ -374,21 +377,106 @@ void select(Node* root, int id)
         }
     }
 }
-
-void buildAVL(vector<Title> movies)
+void inOrder(Node* root)
 {
-    Node* root = NULL;
+    if(root == NULL){
+        return;
+    }
+    else
+    {
+    inOrder(root->left);
+    cout << root->t.genre <<endl;
+    inOrder(root->right);
+    }
+}
+
+vector<Title> findMovies(Node* root, Title tt)
+{
+    
+    vector<Title> movies;
+    cout << "start movies" <<endl;
+    if (root == NULL)
+    {
+        cout <<"this is a problem lol " <<endl;
+        return movies;
+    }
+    while(root!=NULL)
+    {
+        cout <<root->t.genre<<endl;
+        cout <<"Root year: " << root->t.startYear << " T year: " << tt.startYear<<endl;
+        if (root->t.genre.find(tt.genre) != string::npos)
+        {
+            
+            movies.push_back(root->t);
+            if((root->t.startYear - tt.startYear) <= 0)
+            {
+                //cout <<"Root dif here: " << root->t.startYear << " "<< tt.startYear<<endl;
+                //cout << "ROOT DIF " <<(root->t.startYear - tt.startYear) <<endl;
+                root = root->right;
+            }
+            else if((root->t.startYear - tt.startYear) > 0)
+            {
+                //cout <<"Root dif here: " << root->t.startYear << " "<< tt.startYear<<endl;
+                root = root->left;
+                
+            }
+            
+        }
+        else{
+            if((root->t.startYear - tt.startYear) < 0)
+            {
+                //cout <<"Root dif here: " << root->t.startYear << " "<< tt.startYear<<endl;
+                //cout << "ROOT DIF " <<(root->t.startYear - tt.startYear) <<endl;
+                root = root->right;
+            }
+            else if((root->t.startYear - tt.startYear) >= 0)
+            {
+                //cout <<"Root dif here: " << root->t.startYear << " "<< tt.startYear<<endl;
+                root = root->left;
+                
+            }
+        }
+        //cout << "vagina" <<endl;
+        
+    }
+    return movies;
+    
+}
+
+Node* buildAVL(vector<Title> movies, Node* root)
+{
+    //Node* root = NULL;
     for(int i = 0; i < movies.size(); i++)
     {
         root = insert(root, movies[i]);
     }
+    return root;
 }
 
 string getGenres()
 {
     int happySad;
-    vector<string> happy = {"Animation", "Comedy", "Sci-Fi", "Adventure", "Fantasy", "Action", "Family", };
-    vector<string> sad = {"Horror", "Thriller", "War", "Crime", "Documentary", "Drama", "Romance", "Biography"};
+    /*vector<string> happy;// = {"Animation", "Comedy", "Sci-Fi", "Adventure", "Fantasy", "Action", "Family", };
+    happy.push_back("Animation");
+    happy.push_back("Comedy");
+    happy.push_back("Sci-Fi");
+    happy.push_back("Adventure");
+    happy.push_back("Fantasy");
+    happy.push_back("Action");
+    happy.push_back("Family");
+    
+    
+    vector<string> sad; // = {"Horror", "Thriller", "War", "Crime", "Documentary", "Drama", "Romance", "Biography"};
+    sad.push_back("Horror");
+    sad.push_back("Thriller");
+    sad.push_back("War");
+    sad.push_back("Crime");
+    sad.push_back("Documentary");
+    sad.push_back("Drama");
+    sad.push_back("Romance");
+    sad.push_back("Biography");*/
+    
+    
     
     cout<< "Quiz Time!! (Don't Worry This One's Fun lol)"<<endl;
     cout<<"Question #?: Do you need a good laugh or a good cry tonight?" << endl;
@@ -454,6 +542,7 @@ string getGenres()
             return "Thriller";
         }
     }
+    return "Comedy";
     
     
 }
@@ -483,6 +572,8 @@ int main()
     cout << "Loading Movie Data from IMDB Database..." << endl;
     vector<Title> titleObjects = LoadData();
     cout << "Done Loading!" << endl << endl;
+    // debugging
+    cout << "Lib size " << titleObjects.size() << endl;
 
     // welcome screen
     cout << "---------------------------------------------------------------------------------------------" << endl << endl;
@@ -540,9 +631,22 @@ int main()
                     // Start Timer (Zach)
 
                     // AVL Tree Initialize Function (Sydney)
-                    buildAVL(titleObjects);
+                    Node* root = NULL;
+                    cout <<"Excellent choice! " <<endl;
+                    root= buildAVL(titleObjects, root);
+                    
 
                     // AVL Tree *Search* Function (Sydney) <------------------------------------------
+                    Title t;
+                    t.genre = genre;
+                    t.minutes = runTime;
+                    t.startYear = year;
+                    cout << "OG ROOT : " << root->t.titleID<<endl;
+                    //inOrder(root);
+                    //vector<Title> res = findMovies(root, t);
+                    //cout <<"Number of options: " << res.size() << endl;
+                    //debugging stuff
+                    cout << "Library size " << titleObjects.size() << endl;
                     
 
                     break;
