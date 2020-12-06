@@ -20,205 +20,205 @@ using namespace std;
 // Title is a broad term that includes movies, shorts, tv series, video etc.
 struct Title
 {
-	// These variables are the column headers in the data set from title.basics.tsv.gz (https://www.imdb.com/interfaces/)
+    // These variables are the column headers in the data set from title.basics.tsv.gz (https://www.imdb.com/interfaces/)
 
-	// alphanumeric unique identifier of the title
-	int titleID;
-	// the type/format of the title(e.g.movie, short, tvseries, tvepisode, video, etc)
-	string titleType;
-	// the more popular title / the title used by the filmmakers on promotional materials at the point of release
-	string primaryTitle;
-	// original title, in the original language
-	string originalTitle;
-	// 0: non-adult title; 1: adult title
-	int isAdult;
-	// represents the release year of a title.In the case of TV Series, it is the series start year
-	int startYear;
-	// TV Series end year.‘\N’ for all other title types
-	int endYear;
-	// primary runtime of the title, in minutes
-	int minutes;
-	// includes up to three genres associated with the title
-	string genre;
+    // alphanumeric unique identifier of the title
+    int titleID;
+    // the type/format of the title(e.g.movie, short, tvseries, tvepisode, video, etc)
+    string titleType;
+    // the more popular title / the title used by the filmmakers on promotional materials at the point of release
+    string primaryTitle;
+    // original title, in the original language
+    string originalTitle;
+    // 0: non-adult title; 1: adult title
+    int isAdult;
+    // represents the release year of a title.In the case of TV Series, it is the series start year
+    int startYear;
+    // TV Series end year.‘\N’ for all other title types
+    int endYear;
+    // primary runtime of the title, in minutes
+    int minutes;
+    // includes up to three genres associated with the title
+    string genre;
 
-	Title();
-	Title(int titleID, string titleType, string primaryTitle, string originalTitle,
-		int isAdult, int startYear, int endYear, int minutes, string genre);
+    Title();
+    Title(int titleID, string titleType, string primaryTitle, string originalTitle,
+        int isAdult, int startYear, int endYear, int minutes, string genre);
 };
 
 Title::Title()
 {
-	titleID = 0;
-	titleType = "Not Initialized";
-	primaryTitle = "Not Initialized";
-	originalTitle = "Not Initialized";
-	isAdult = 0;
-	startYear = 0;
-	endYear = 0;
-	minutes = 0;
-	genre = "";
+    titleID = 0;
+    titleType = "Not Initialized";
+    primaryTitle = "Not Initialized";
+    originalTitle = "Not Initialized";
+    isAdult = 0;
+    startYear = 0;
+    endYear = 0;
+    minutes = 0;
+    genre = "";
 }
 
 Title::Title(int titleID, string titleType, string primaryTitle, string originalTitle,
-	int isAdult, int startYear, int endYear, int minutes, string genre)
+    int isAdult, int startYear, int endYear, int minutes, string genre)
 {
-	this->titleID = titleID;
-	this->titleType = titleType;
-	this->primaryTitle = primaryTitle;
-	this->originalTitle = originalTitle;
-	this->isAdult = isAdult;
-	this->startYear = startYear;
-	this->endYear = endYear;
-	this->minutes = minutes;
-	this->genre = genre;
+    this->titleID = titleID;
+    this->titleType = titleType;
+    this->primaryTitle = primaryTitle;
+    this->originalTitle = originalTitle;
+    this->isAdult = isAdult;
+    this->startYear = startYear;
+    this->endYear = endYear;
+    this->minutes = minutes;
+    this->genre = genre;
 }
 
 // Load Data function. returns vector of title objects
 vector<Title> LoadData()
 {
-	ifstream data("data.tsv");
+    ifstream data("data.tsv");
 
-	vector<Title> titleObjects;
+    vector<Title> titleObjects;
 
-	if (data.is_open())
-	{
-		string line;
-		int counter = 1;
+    if (data.is_open())
+    {
+        string line;
+        int counter = 1;
 
-		// pass over first line of headers
-		getline(data, line);
+        // pass over first line of headers
+        getline(data, line);
 
-		// IMPORTANT: adjust for-loop counter to determine number of rows to read
-		int loopCounter = 10000;
-		for (int i = 0; i < loopCounter; i++)
-		{
-			// percent loaded
-			int singlePercent = loopCounter / 100;
-			int check = i / singlePercent;
-			if (check == counter)
-			{
-				cout << counter << "%" << endl;
-				counter++;
-			}
+        // IMPORTANT: adjust for-loop counter to determine number of rows to read
+        int loopCounter = 10000;
+        for (int i = 0; i < loopCounter; i++)
+        {
+            // percent loaded
+            int singlePercent = loopCounter / 100;
+            int check = i / singlePercent;
+            if (check == counter)
+            {
+                cout << counter << "%" << endl;
+                counter++;
+            }
 
-			// declare variables to capture data
-			string _titleID;
-			string _titleType;
-			string _primaryTitle;
-			string _originalTitle;
-			string _isAdult;
-			string _startYear;
-			string _endYear;
-			string _minutes;
-			string _genre;
+            // declare variables to capture data
+            string _titleID;
+            string _titleType;
+            string _primaryTitle;
+            string _originalTitle;
+            string _isAdult;
+            string _startYear;
+            string _endYear;
+            string _minutes;
+            string _genre;
 
-			// clear row of header
-			getline(data, line);
+            // clear row of header
+            getline(data, line);
 
-			// create stringstream
-			istringstream streamFromLine(line);
+            // create stringstream
+            istringstream streamFromLine(line);
 
-			// get title characteristics
-			getline(streamFromLine, _titleID, '\t');
-			getline(streamFromLine, _titleType, '\t');
-			getline(streamFromLine, _primaryTitle, '\t');
-			getline(streamFromLine, _originalTitle, '\t');
-			getline(streamFromLine, _isAdult, '\t');
-			getline(streamFromLine, _startYear, '\t');
-			getline(streamFromLine, _endYear, '\t');
-			getline(streamFromLine, _minutes, '\t');
-			getline(streamFromLine, _genre, '\t');
+            // get title characteristics
+            getline(streamFromLine, _titleID, '\t');
+            getline(streamFromLine, _titleType, '\t');
+            getline(streamFromLine, _primaryTitle, '\t');
+            getline(streamFromLine, _originalTitle, '\t');
+            getline(streamFromLine, _isAdult, '\t');
+            getline(streamFromLine, _startYear, '\t');
+            getline(streamFromLine, _endYear, '\t');
+            getline(streamFromLine, _minutes, '\t');
+            getline(streamFromLine, _genre, '\t');
 
-			// filter out bad entries and initialize date into objects
-			// also pushback valid rows of data into object vector
+            // filter out bad entries and initialize date into objects
+            // also pushback valid rows of data into object vector
 
-			// throw out adult films for this project
-			if (stoi(_isAdult) == 1)
-				continue;
+            // throw out adult films for this project
+            if (stoi(_isAdult) == 1)
+                continue;
 
-			// throw out all garbage episode titles
-			string episodeCheck = "Episode";
-			if (episodeCheck.compare(_primaryTitle.substr(0, 7)) == 0)
-				continue;
+            // throw out all garbage episode titles
+            string episodeCheck = "Episode";
+            if (episodeCheck.compare(_primaryTitle.substr(0, 7)) == 0)
+                continue;
 
-			// change any value of '/N' that are supposed to be numbers(start date, minutes, etc.) to integer = 0
-			// if a string is '/N' we will just leave it
-			string nullCheck = "\\N";
+            // change any value of '/N' that are supposed to be numbers(start date, minutes, etc.) to integer = 0
+            // if a string is '/N' we will just leave it
+            string nullCheck = "\\N";
 
-			if (_startYear.compare(nullCheck) == 0)
-				_startYear = "0";
-			if (_endYear.compare(nullCheck) == 0)
-				_endYear = "0";
-			if (_minutes.compare(nullCheck) == 0)
-				_minutes = "0";
+            if (_startYear.compare(nullCheck) == 0)
+                _startYear = "0";
+            if (_endYear.compare(nullCheck) == 0)
+                _endYear = "0";
+            if (_minutes.compare(nullCheck) == 0)
+                _minutes = "0";
 
-			// chop "tt" off _titleID. convert all necessary strings to ints when needed
-			_titleID = _titleID.substr(2);
-			int titInt = stoi(_titleID);
-			int adultInt = stoi(_isAdult);
-			int startInt = stoi(_startYear);
-			int endInt = stoi(_endYear);
-			int minuteInt = stoi(_minutes);
+            // chop "tt" off _titleID. convert all necessary strings to ints when needed
+            _titleID = _titleID.substr(2);
+            int titInt = stoi(_titleID);
+            int adultInt = stoi(_isAdult);
+            int startInt = stoi(_startYear);
+            int endInt = stoi(_endYear);
+            int minuteInt = stoi(_minutes);
 
-			// initialize title object
-			Title t(titInt, _titleType, _primaryTitle, _originalTitle, adultInt, startInt, endInt, minuteInt, _genre);
+            // initialize title object
+            Title t(titInt, _titleType, _primaryTitle, _originalTitle, adultInt, startInt, endInt, minuteInt, _genre);
 
-			// pushback to vector of objects
-			titleObjects.push_back(t);
-		}
-	}
+            // pushback to vector of objects
+            titleObjects.push_back(t);
+        }
+    }
 
-	// print data
-	// IMPORTANT: COMMENT THIS OUT IF YOU DON'T WANT IT TO PRINT
-	/*
-	for (auto iter = titleObjects.begin(); iter != titleObjects.end(); ++iter)
-	{
-		Title temp = *iter;
-		cout << temp.titleID << " " << temp.titleType << " " <<  temp.primaryTitle << " " << temp.originalTitle << " " <<
-			temp.primaryTitle << " " << temp.isAdult << " " << temp.startYear << " " << temp.endYear << " " <<
-			temp.minutes << " " << temp.genre << endl;
-	}
-	*/
+    // print data
+    // IMPORTANT: COMMENT THIS OUT IF YOU DON'T WANT IT TO PRINT
+    /*
+    for (auto iter = titleObjects.begin(); iter != titleObjects.end(); ++iter)
+    {
+        Title temp = *iter;
+        cout << temp.titleID << " " << temp.titleType << " " <<  temp.primaryTitle << " " << temp.originalTitle << " " <<
+            temp.primaryTitle << " " << temp.isAdult << " " << temp.startYear << " " << temp.endYear << " " <<
+            temp.minutes << " " << temp.genre << endl;
+    }
+    */
 
-	data.close();
+    data.close();
 
-	return titleObjects;
+    return titleObjects;
 }
 
 class Node
 {
 public:
-	Title t;
-	Node* left;
-	Node* right;
-	int height;
-	int bf;
-	Node() : t(), left(nullptr), right(nullptr), height(0) {}
-	Node(Title _t) : t(_t), left(nullptr), right(nullptr) {}
-	Node(Title _t, Node* left, Node* right) : t(_t), left(left), right(right) {}
+    Title t;
+    Node* left;
+    Node* right;
+    int height;
+    int bf;
+    Node() : t(), left(nullptr), right(nullptr), height(0) {}
+    Node(Title _t) : t(_t), left(nullptr), right(nullptr) {}
+    Node(Title _t, Node* left, Node* right) : t(_t), left(left), right(right) {}
 
 };
 
 int getHeight(Node* root)
 {
-	if (root == NULL)
-	{
-		return 0;
-	}
-	return 1 + (max(getHeight(root->right), getHeight(root->left))); // this was inspired by
-	//the line above was created with help from reading this GeeksForGeeks article.
-	//https://www.geeksforgeeks.org/how-to-determine-if-a-binary-tree-is-balanced/#:~:text=To%20check%20if%20a%20tree,are%20balanced%2C%20otherwise%20return%20false.
+    if (root == NULL)
+    {
+        return 0;
+    }
+    return 1 + (max(getHeight(root->right), getHeight(root->left))); // this was inspired by
+    //the line above was created with help from reading this GeeksForGeeks article.
+    //https://www.geeksforgeeks.org/how-to-determine-if-a-binary-tree-is-balanced/#:~:text=To%20check%20if%20a%20tree,are%20balanced%2C%20otherwise%20return%20false.
 }
 
 int getBalanceFactor(Node* node)
 {
-	//balance factor is left root height - right root height
-	if (node == NULL)
-	{
-		return 0;
-	}
-	int bf = getHeight(node->left) - getHeight(node->right);
-	return bf;
+    //balance factor is left root height - right root height
+    if (node == NULL)
+    {
+        return 0;
+    }
+    int bf = getHeight(node->left) - getHeight(node->right);
+    return bf;
 }
 
 //Rotations
@@ -226,31 +226,31 @@ int getBalanceFactor(Node* node)
 //The logic behind this was provided in Lecture 4C
 Node* rotateLeft(Node* node)
 {
-	Node* temp;
-	temp = node->right;
-	node->right = temp->left;
-	temp->left = node;
-	return temp;
+    Node* temp;
+    temp = node->right;
+    node->right = temp->left;
+    temp->left = node;
+    return temp;
 
 }
 
 //The logic behind this was provided in Lecture 4C
 Node* rotateRight(Node* node)
 {
-	Node* temp;
-	temp = node->left;
-	node->left = temp->right;
-	temp->right = node;
-	return temp;
+    Node* temp;
+    temp = node->left;
+    node->left = temp->right;
+    temp->right = node;
+    return temp;
 
 }
 
 //The logic behind this was provided in Lecture 4C
 Node* rotateLeftRight(Node* node)
 {
-	Node* temp = node->left;
-	node->left = rotateLeft(temp);
-	return rotateRight(node);
+    Node* temp = node->left;
+    node->left = rotateLeft(temp);
+    return rotateRight(node);
 
 }
 
@@ -258,9 +258,9 @@ Node* rotateLeftRight(Node* node)
 Node* rotateRightLeft(Node* node)
 {
 
-	Node* temp = node->right;
-	node->right = rotateRight(temp);
-	return rotateLeft(node);
+    Node* temp = node->right;
+    node->right = rotateRight(temp);
+    return rotateLeft(node);
 }
 
 // Main functions:
@@ -268,218 +268,322 @@ Node* rotateRightLeft(Node* node)
 //The base logic behind this was provided in Lecture 3D
 Node* insert(Node* root, Title tt)
 {
-	// if root is null, the recursion is done and we can return
-	if (root == NULL)
-	{
-		cout << "successful" << endl;
-		return new Node(tt);
-	}
-	//check if node needs to go in left subtree
-	if ((tt.titleID) < root->t.titleID)
-	{
-		root->left = insert(root->left, tt);
+    // if root is null, the recursion is done and we can return
+    if (root == NULL)
+    {
+        cout << "successful" << endl;
+        return new Node(tt);
+    }
+    //check if node needs to go in left subtree
+    if ((tt.titleID) < root->t.titleID)
+    {
+        root->left = insert(root->left, tt);
 
-	}
-	// check if node needs to go in right subtree
-	else if ((tt.titleID) > root->t.titleID)
-	{
-		root->right = insert(root->right, tt);
+    }
+    // check if node needs to go in right subtree
+    else if ((tt.titleID) > root->t.titleID)
+    {
+        root->right = insert(root->right, tt);
 
-	}
-	//check if node is already in the tree
-	else if ((tt.titleID) == root->t.titleID)
-	{
-		cout << "unsuccessful" << endl;
-		return root;
-	}
+    }
+    //check if node is already in the tree
+    else if ((tt.titleID) == root->t.titleID)
+    {
+        cout << "unsuccessful" << endl;
+        return root;
+    }
 
-	int bf = getBalanceFactor(root);
+    int bf = getBalanceFactor(root);
 
-	// The Rotation algorithm was implemented after reading GeeksForGeeks Article:
-	// https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
-	// the second part of the If statements specifically were inspired by this code.
+    // The Rotation algorithm was implemented after reading GeeksForGeeks Article:
+    // https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
+    // the second part of the If statements specifically were inspired by this code.
 
 
-	//Left Right Rotation
-	if (bf > 1 && tt.titleID > root->left->t.titleID)
-	{
-		return rotateLeftRight(root);
-	}
-	//Right Right Rotation
-	if (bf < -1 && tt.titleID > root->right->t.titleID)
-	{
-		return rotateLeft(root);
-	}
-	//Right Left Rotation
-	if (bf < -1 && tt.titleID < root->right->t.titleID)
-	{
-		return rotateRightLeft(root);
-	}
-	//Left Left Rotation
-	// if the balance factor is more than 1 and the ID needs to go in the
-	if (bf > 1 && tt.titleID < root->left->t.titleID)
-	{
-		return rotateRight(root);
-	}
+    //Left Right Rotation
+    if (bf > 1 && tt.titleID > root->left->t.titleID)
+    {
+        return rotateLeftRight(root);
+    }
+    //Right Right Rotation
+    if (bf < -1 && tt.titleID > root->right->t.titleID)
+    {
+        return rotateLeft(root);
+    }
+    //Right Left Rotation
+    if (bf < -1 && tt.titleID < root->right->t.titleID)
+    {
+        return rotateRightLeft(root);
+    }
+    //Left Left Rotation
+    // if the balance factor is more than 1 and the ID needs to go in the
+    if (bf > 1 && tt.titleID < root->left->t.titleID)
+    {
+        return rotateRight(root);
+    }
 
-	return root;
+    return root;
 }
 
 //i wrote this for proj 1 but i thought this could be used to find the movie we end up looking for?
 void select(Node* root, int id)
 {
-	bool foundName = false;
-	//check if root is null
-	if (root == NULL)
-	{
-		cout << "unsuccessful" << endl;
-		foundName = true;
-	}
-	//check to see where in tree
-	while (foundName == false)
-	{
-		if (root == NULL)
-		{
-			cout << "unsuccessful" << endl;
-			foundName = true;
-		}
-		if (root->t.titleID == id)
-		{
-			cout << root->t.titleID << endl;
-			foundName = true;
-		}
-		else if (id < root->t.titleID)
-		{
-			if (root->left != NULL)
-			{
-				root = root->left;
-			}
-			else
-			{
-				cout << "unsuccessful" << endl;
-				foundName = true;
-			}
-		}
-		else if (id > root->t.titleID)
-		{
-			if (root->right != NULL)
-			{
-				root = root->right;
-			}
-			else
-			{
-				cout << "unsuccessful" << endl;
-				foundName = true;
-			}
-		}
-	}
+    bool foundName = false;
+    //check if root is null
+    if (root == NULL)
+    {
+        cout << "unsuccessful" << endl;
+        foundName = true;
+    }
+    //check to see where in tree
+    while (foundName == false)
+    {
+        if (root == NULL)
+        {
+            cout << "unsuccessful" << endl;
+            foundName = true;
+        }
+        if (root->t.titleID == id)
+        {
+            cout << root->t.titleID << endl;
+            foundName = true;
+        }
+        else if (id < root->t.titleID)
+        {
+            if (root->left != NULL)
+            {
+                root = root->left;
+            }
+            else
+            {
+                cout << "unsuccessful" << endl;
+                foundName = true;
+            }
+        }
+        else if (id > root->t.titleID)
+        {
+            if (root->right != NULL)
+            {
+                root = root->right;
+            }
+            else
+            {
+                cout << "unsuccessful" << endl;
+                foundName = true;
+            }
+        }
+    }
+}
+
+void buildAVL(vector<Title> movies)
+{
+    Node* root = NULL;
+    for(int i = 0; i < movies.size(); i++)
+    {
+        root = insert(root, movies[i]);
+    }
+}
+
+string getGenres()
+{
+    int happySad;
+    vector<string> happy = {"Animation", "Comedy", "Sci-Fi", "Adventure", "Fantasy", "Action", "Family", };
+    vector<string> sad = {"Horror", "Thriller", "War", "Crime", "Documentary", "Drama", "Romance", "Biography"};
+    
+    cout<< "Quiz Time!! (Don't Worry This One's Fun lol)"<<endl;
+    cout<<"Question #?: Do you need a good laugh or a good cry tonight?" << endl;
+    cout <<"Enter 1 for laugh, 2 for cry" << endl;
+    cin >> happySad;
+    // here we will either work with happy or sad
+    while(happySad!=1 && happySad!=2)
+    {
+        cout << "excuse me i said 1 or 2" <<endl;
+        cin >> happySad;
+    }
+    if(happySad == 1)
+    {
+        cout <<"Which are you looking for?" << endl;
+        cout << "1. Simple fun" <<endl <<"2. ADRENALINE" << endl <<"3. Mystery" << endl << "4. I said I wanted a good laugh"<< endl;
+        cin>> happySad;
+        while(happySad != 1 && happySad != 2 && happySad != 3 &&happySad != 4)
+        {
+            cout << "You're not good with directions smh. Try again pls" << endl;
+            cin>> happySad;
+        }
+        if(happySad == 1)
+        {
+            return "Animation";
+        }
+        if(happySad == 2)
+        {
+            return "Action";
+        }
+        if(happySad == 3)
+        {
+            return "Fantasy";
+        }
+        if(happySad == 4)
+        {
+            return "Comedy";
+        }
+    }
+    if(happySad == 2)
+    {
+        cout <<"Which are you looking for?" << endl;
+        cout << "1. Love <3" <<endl <<"2. MURDER" << endl <<"3. Historical Info" << endl << "4. Surprise me"<< endl;
+        cin>> happySad;
+        while(happySad != 1 && happySad != 2 && happySad != 3 &&happySad != 4)
+        {
+            cout << "You're not good with directions smh. Try again pls" << endl;
+            cin>> happySad;
+        }
+        if(happySad == 1)
+        {
+            return "Romance";
+        }
+        if(happySad == 2)
+        {
+            return "Horror";
+        }
+        if(happySad == 3)
+        {
+            return "Documentary";
+        }
+        if(happySad == 4)
+        {
+            return "Thriller";
+        }
+    }
+    
+    
+}
+
+int getYear()
+{
+    int year;
+    cout << "If you could travel to any 20th century decade, when would you visit?" << endl;
+    cin>>year;
+    return year;
+}
+
+int getRuntime()
+{
+    int time;
+    cout << "How much time do you want to invest in this movie (Pls enter in minutes)" << endl;
+    cin >> time;
+    return time;
 }
 
 int main()
 {
-	// load file title.basics.tsv.gz 
-	// pushback these objects to a vector
-		// IMPORTANT: This is the vector that will be passed by reference into functions that create the Map and AVL structures
+    // load file title.basics.tsv.gz
+    // pushback these objects to a vector
+        // IMPORTANT: This is the vector that will be passed by reference into functions that create the Map and AVL structures
 
-	cout << "Loading Movie Data from IMDB Database..." << endl;
-	vector<Title> titleObjects = LoadData();
-	cout << "Done Loading!" << endl << endl;
+    cout << "Loading Movie Data from IMDB Database..." << endl;
+    vector<Title> titleObjects = LoadData();
+    cout << "Done Loading!" << endl << endl;
 
-	// welcome screen
-	cout << "---------------------------------------------------------------------------------------------" << endl << endl;
-	cout << "Welcome to our Movie Recommending Quiz!" << endl << endl;
-	cout << "We gathered titles (movies, tv-shows, videos, etc.) from the IMDB Database and " << endl;
-	cout << "we want to recommend a title selection for you after answering a simple set of questions!" << endl << endl;
-	cout << "Press ENTER to begin. . ." << endl;
+    // welcome screen
+    cout << "---------------------------------------------------------------------------------------------" << endl << endl;
+    cout << "Welcome to our Movie Recommending Quiz!" << endl << endl;
+    cout << "We gathered titles (movies, tv-shows, videos, etc.) from the IMDB Database and " << endl;
+    cout << "we want to recommend a title selection for you after answering a simple set of questions!" << endl << endl;
+    cout << "Press ENTER to begin. . ." << endl;
 
-	cin.ignore();
+    cin.ignore();
 
-	// QUIZ LOOP
-	int selection = 1;
-	while (selection == 1)
-	{
-		cout << "---------------------------------------------------------------------------------------------" << endl << endl;
-		
-		cout << "*QUIZ QUESTIONS AND STORING THE ANSWERS WILL GO HERE*" << endl << endl;
-			// maybe storing answers in an array(index is question # and value is answer) 
-			// or map (key is question number, value is answer)
+    // QUIZ LOOP
+    int selection = 1;
+    while (selection == 1)
+    {
+        cout << "---------------------------------------------------------------------------------------------" << endl << endl;
+        
+        cout << "*QUIZ QUESTIONS AND STORING THE ANSWERS WILL GO HERE*" << endl << endl;
+            // maybe storing answers in an array(index is question # and value is answer)
+            // or map (key is question number, value is answer)
+        string genre = getGenres();
+        int year = getYear();
+        int runTime = getRuntime();
 
-		// choose data structure to use
-		cout << "Which data structure do you want to use to store and search for titles?" << endl;
-		cout << "1. Map" << endl;
-		cout << "2. AVL Tree" << endl;
+        // choose data structure to use
+        cout << "Which data structure do you want to use to store and search for titles?" << endl;
+        cout << "1. Map" << endl;
+        cout << "2. AVL Tree" << endl;
 
-		int dataChoice;
-		while (true)
-		{
-			// this code prevents infinite loop on invalid char input. 
-			// inspired from https://stackoverflow.com/questions/21844160/why-does-my-program-have-an-infinite-loop-when-i-enter-in-a-character
-			if (!(cin >> dataChoice))
-			{
-				cin.clear(); // clears the error state
-				cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // remove the bad input from the buffer
-				cout << "Invalid input. Try Again." << endl;
-				continue;
-			}
-			else
-			{
-				if (dataChoice == 1)
-				{
-					// Start Timer (Zach)
+        int dataChoice;
+        while (true)
+        {
+            // this code prevents infinite loop on invalid char input.
+            // inspired from https://stackoverflow.com/questions/21844160/why-does-my-program-have-an-infinite-loop-when-i-enter-in-a-character
+            if (!(cin >> dataChoice))
+            {
+                cin.clear(); // clears the error state
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // remove the bad input from the buffer
+                cout << "Invalid input. Try Again." << endl;
+                continue;
+            }
+            else
+            {
+                if (dataChoice == 1)
+                {
+                    // Start Timer (Zach)
 
-					// Map Initialize Function (Elizabeth) <------------------------------------------
+                    // Map Initialize Function (Elizabeth) <------------------------------------------
 
-					// Map *Search* Function (Elizabeth) <------------------------------------------
+                    // Map *Search* Function (Elizabeth) <------------------------------------------
 
-					break;
-				}
-				else if (dataChoice == 2)
-				{
-					// Start Timer (Zach)
+                    break;
+                }
+                else if (dataChoice == 2)
+                {
+                    // Start Timer (Zach)
 
-					// AVL Tree Initialize Function (Sydney) <------------------------------------------
+                    // AVL Tree Initialize Function (Sydney)
+                    buildAVL(titleObjects);
 
-					// AVL Tree *Search* Function (Sydney) <------------------------------------------
+                    // AVL Tree *Search* Function (Sydney) <------------------------------------------
+                    
 
-					break;
-				}
-				else
-				{
-					cout << "Invalid input. Try Again." << endl;
-					continue;
-				}
-			}
-		}
-
-
-		// *SEARCH* Using the answers, search for titles based on "things" (genres, decades, title etc.)
-			// if certain set of questions are answered, search for certain genre etc.
-
-			// ------------NOT SURE YET!----------------
-				// Zach's Idea: I can figure out which things to search for, add them to a container, and pass that container into your functions
-				// It would just be tricky for you all figuring out how to use that container to find titles
-				// ALSO: this is a problem we can solve towards the end or over a zoom
-
-			// if more than 1 title satisfies the search, randomly select one of them to recommend to the user
-			// or just output a list of the titles
+                    break;
+                }
+                else
+                {
+                    cout << "Invalid input. Try Again." << endl;
+                    continue;
+                }
+            }
+        }
 
 
-		// output search result
-		cout << endl << "The title we have recommended for you is: " << "*REPLACE THIS WITH SEARCH RESULT*" << endl << endl;
+        // *SEARCH* Using the answers, search for titles based on "things" (genres, decades, title etc.)
+            // if certain set of questions are answered, search for certain genre etc.
 
-		// end timer and display time
-		if (dataChoice == 1)
-			cout << "Time it took to store and search data using Map: " << "*INPUT TIMER RESULT HERE*" << endl << endl;
-		if (dataChoice == 2)
-			cout << "Time it took to store and search data using AVL Tree: " << "*INPUT TIMER RESULT HERE*" << endl << endl;
+            // ------------NOT SURE YET!----------------
+                // Zach's Idea: I can figure out which things to search for, add them to a container, and pass that container into your functions
+                // It would just be tricky for you all figuring out how to use that container to find titles
+                // ALSO: this is a problem we can solve towards the end or over a zoom
 
-		// ask if they want to take quiz again
-		cout << "Enter \"1\" to take the quiz again" << endl;
-		cin >> selection;
-		cout << endl;
-	}
+            // if more than 1 title satisfies the search, randomly select one of them to recommend to the user
+            // or just output a list of the titles
 
-	cout << "Enjoy your viewing experience!" << endl;
 
-	return 0;
+        // output search result
+        cout << endl << "The title we have recommended for you is: " << "*REPLACE THIS WITH SEARCH RESULT*" << endl << endl;
+
+        // end timer and display time
+        if (dataChoice == 1)
+            cout << "Time it took to store and search data using Map: " << "*INPUT TIMER RESULT HERE*" << endl << endl;
+        if (dataChoice == 2)
+            cout << "Time it took to store and search data using AVL Tree: " << "*INPUT TIMER RESULT HERE*" << endl << endl;
+
+        // ask if they want to take quiz again
+        cout << "Enter \"1\" to take the quiz again" << endl;
+        cin >> selection;
+        cout << endl;
+    }
+
+    cout << "Enjoy your viewing experience!" << endl;
+
+    return 0;
 }
