@@ -90,7 +90,7 @@ vector<Title> LoadData()
         getline(data, line);
 
         // IMPORTANT: adjust for-loop counter to determine number of rows to read
-        int loopCounter = 10000;
+        int loopCounter = 100000;
         for (int i = 0; i < loopCounter; i++)
         {
             // percent loaded
@@ -476,7 +476,7 @@ vector<Title> findMovies(Node* root, Title tt)
 Node* buildAVL(vector<Title> movies, Node* root)
 {
     
-    for(int i = 0; i < movies.size(); i++)
+    for(int i = 30000; i < 50000; i++)
     {
         root = insert(root, movies[i]);
     }
@@ -647,7 +647,7 @@ int main()
                     Node* root = NULL;
                     cout <<"Excellent choice! " <<endl;
                     root= buildAVL(titleObjects, root);
-                    
+                    cout <<"We built the tree" <<endl;
 
                     // AVL Tree *Search* Function (Sydney) <------------------------------------------
                     Title t;
