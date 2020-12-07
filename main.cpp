@@ -76,7 +76,7 @@ Title::Title(int titleID, string titleType, string primaryTitle, string original
 // Load Data function. returns vector of title objects
 vector<Title> LoadData()
 {
-    ifstream data("/users/Sydney/Downloads/title.basics.tsv");
+    ifstream data("data.tsv");
 
     vector<Title> titleObjects;
 
@@ -390,6 +390,23 @@ void inOrder(Node* root)
     }
 }
 
+void inOrderTrav(Node* root, vector<Title>& movies, Title tt)
+{
+    if(root == NULL){
+        return;
+    }
+    else
+    {
+    inOrderTrav(root->left, movies, tt);
+    if(root->t.genre.find(tt.genre) != string::npos)
+    {
+        movies.push_back(root->t);
+    }
+    inOrderTrav(root->right, movies, tt);
+    }
+}
+
+
 vector<Title> findMovies(Node* root, Title tt)
 {
     
@@ -402,12 +419,26 @@ vector<Title> findMovies(Node* root, Title tt)
     }
     while(root!=NULL)
     {
-        cout <<root->t.genre<<endl;
+        //cout <<root->t.genre<<endl;
         cout <<"Root year: " << root->t.startYear << " T year: " << tt.startYear<<endl;
         if (root->t.genre.find(tt.genre) != string::npos)
         {
             
-            movies.push_back(root->t);
+            
+            if((tt.startYear - root->t.startYear) < 2 && (tt.startYear - root->t.startYear) > 0)
+            {
+                root = root->right;
+                inOrderTrav(root, movies, tt);
+                break;
+            }
+            else if((tt.startYear - root->t.startYear) > -2 && (tt.startYear - root->t.startYear) < 0)
+            {
+                root = root->left;
+                inOrderTrav(root, movies, tt);
+                break;
+            }
+            
+            /*movies.push_back(root->t);
             if((root->t.startYear - tt.startYear) <= 0)
             {
                 //cout <<"Root dif here: " << root->t.startYear << " "<< tt.startYear<<endl;
@@ -419,7 +450,7 @@ vector<Title> findMovies(Node* root, Title tt)
                 //cout <<"Root dif here: " << root->t.startYear << " "<< tt.startYear<<endl;
                 root = root->left;
                 
-            }
+            }*/
             
         }
         else{
@@ -456,25 +487,6 @@ Node* buildAVL(vector<Title> movies, Node* root)
 string getGenres()
 {
     int happySad;
-    /*vector<string> happy;// = {"Animation", "Comedy", "Sci-Fi", "Adventure", "Fantasy", "Action", "Family", };
-    happy.push_back("Animation");
-    happy.push_back("Comedy");
-    happy.push_back("Sci-Fi");
-    happy.push_back("Adventure");
-    happy.push_back("Fantasy");
-    happy.push_back("Action");
-    happy.push_back("Family");
-    
-    
-    vector<string> sad; // = {"Horror", "Thriller", "War", "Crime", "Documentary", "Drama", "Romance", "Biography"};
-    sad.push_back("Horror");
-    sad.push_back("Thriller");
-    sad.push_back("War");
-    sad.push_back("Crime");
-    sad.push_back("Documentary");
-    sad.push_back("Drama");
-    sad.push_back("Romance");
-    sad.push_back("Biography");*/
     
     
     
@@ -643,8 +655,8 @@ int main()
                     t.startYear = year;
                     cout << "OG ROOT : " << root->t.titleID<<endl;
                     //inOrder(root);
-                    //vector<Title> res = findMovies(root, t);
-                    //cout <<"Number of options: " << res.size() << endl;
+                    vector<Title> res = findMovies(root, t);
+                    cout <<"Number of options: " << res.size() << endl;
                     //debugging stuff
                     cout << "Library size " << titleObjects.size() << endl;
                     
