@@ -2,7 +2,7 @@
 Team 28
 Team Members - Elizabeth Gekhtman, Sydney Opyrchal, Zachary Krol
 Project Title - Buzzfeed Quiz Knockoff: Movie Recommender
-Last Updated: 12/4/2020 11:52pm by ZK
+Last Updated: 12/7/2020 12:31pm by EG
 */
 
 #include <iomanip>
@@ -755,7 +755,7 @@ int main()
                 else if(dataChoice == 3)
                 {
                     cout << "Choosing a random title now!" << endl;
-                    int random = rand() % 10000; 
+                    int random = rand() % titleObjects.size(); 
                     Title movieObj = titleObjects[random];
                     cout << "Your random title is: " << movieObj.originalTitle << endl << endl;
 
