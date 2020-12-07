@@ -2,7 +2,6 @@
 Team 28
 Team Members - Elizabeth Gekhtman, Sydney Opyrchal, Zachary Krol
 Project Title - Buzzfeed Quiz Knockoff: Movie Recommender
-Last Updated: 12/4/2020 11:52pm by ZK
 */
 
 #include <iomanip>
@@ -15,7 +14,9 @@ Last Updated: 12/4/2020 11:52pm by ZK
 #include <iterator>
 #include <algorithm>
 #include <ctype.h>
+#include <chrono>
 using namespace std;
+using namespace std::chrono; // for the timer
 
 // Title is a broad term that includes movies, shorts, tv series, video etc.
 struct Title
@@ -184,7 +185,6 @@ vector<Title> LoadData()
     */
 
     data.close();
-
     return titleObjects;
 }
 
@@ -477,8 +477,18 @@ vector<Title> findMovies(Node* root, Title tt)
 Node* buildAVL(vector<Title> movies, Node* root)
 {
     //Node* root = NULL;
-    for(int i = 0; i < movies.size(); i++)
+    int loopCounter = movies.size();
+    int counter = 1;
+    for (int i = 0; i < loopCounter; i++)
     {
+        // percent loaded
+        int singlePercent = loopCounter / 100;
+        int check = i / singlePercent;
+        if (check == counter)
+        {
+            cout << counter << "%" << endl;
+            counter++;
+        }
         root = insert(root, movies[i]);
     }
     return root;
@@ -631,16 +641,23 @@ int main()
                 if (dataChoice == 1)
                 {
                     // Start Timer (Zach)
+                    auto startTime = high_resolution_clock::now();
 
                     // Map Initialize Function (Elizabeth) <------------------------------------------
 
                     // Map *Search* Function (Elizabeth) <------------------------------------------
+                    
+                    // End Timer (Zach)
+                    auto stopTime = high_resolution_clock::now();
+                    auto timeDuration = duration_cast<seconds>(stopTime - startTime);
+                    cout << "Time it took to store and search data using Map: " << timeDuration.count() << " seconds" << endl << endl;
 
                     break;
                 }
                 else if (dataChoice == 2)
                 {
                     // Start Timer (Zach)
+                    auto startTime = high_resolution_clock::now();
 
                     // AVL Tree Initialize Function (Sydney)
                     Node* root = NULL;
@@ -660,6 +677,11 @@ int main()
                     //debugging stuff
                     cout << "Library size " << titleObjects.size() << endl;
                     
+                    // End Timer (Zach)
+                    auto stopTime = high_resolution_clock::now();
+                    auto timeDuration = duration_cast<seconds>(stopTime - startTime);
+                    cout << "Time it took to store and search data using Map: " << timeDuration.count() << " seconds" << endl << endl;
+                    
 
                     break;
                 }
@@ -671,27 +693,9 @@ int main()
             }
         }
 
-
-        // *SEARCH* Using the answers, search for titles based on "things" (genres, decades, title etc.)
-            // if certain set of questions are answered, search for certain genre etc.
-
-            // ------------NOT SURE YET!----------------
-                // Zach's Idea: I can figure out which things to search for, add them to a container, and pass that container into your functions
-                // It would just be tricky for you all figuring out how to use that container to find titles
-                // ALSO: this is a problem we can solve towards the end or over a zoom
-
-            // if more than 1 title satisfies the search, randomly select one of them to recommend to the user
-            // or just output a list of the titles
-
-
         // output search result
         cout << endl << "The title we have recommended for you is: " << "*REPLACE THIS WITH SEARCH RESULT*" << endl << endl;
 
-        // end timer and display time
-        if (dataChoice == 1)
-            cout << "Time it took to store and search data using Map: " << "*INPUT TIMER RESULT HERE*" << endl << endl;
-        if (dataChoice == 2)
-            cout << "Time it took to store and search data using AVL Tree: " << "*INPUT TIMER RESULT HERE*" << endl << endl;
 
         // ask if they want to take quiz again
         cout << "Enter \"1\" to take the quiz again" << endl;
