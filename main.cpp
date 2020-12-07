@@ -15,12 +15,14 @@ Last Updated: 12/4/2020 11:52pm by ZK
 #include <iterator>
 #include <algorithm>
 #include <ctype.h>
+#include <map>
 using namespace std;
 
 // Title is a broad term that includes movies, shorts, tv series, video etc.
 struct Title
 {
     // These variables are the column headers in the data set from title.basics.tsv.gz (https://www.imdb.com/interfaces/)
+    // Extract data.tsv from title.basics.tsv.gz and add to resource files and the same directory as the solution's main drive
 
     // alphanumeric unique identifier of the title
     int titleID;
@@ -44,6 +46,32 @@ struct Title
     Title();
     Title(int titleID, string titleType, string primaryTitle, string originalTitle,
         int isAdult, int startYear, int endYear, int minutes, string genre);
+};
+
+class Node
+{
+public:
+    Title t;
+    Node* left;
+    Node* right;
+    int height;
+    int bf;
+    Node() : t(), left(nullptr), right(nullptr), height(0) {}
+    Node(Title _t) : t(_t), left(nullptr), right(nullptr) {}
+    Node(Title _t, Node* left, Node* right) : t(_t), left(left), right(right) {}
+
+};
+
+class Graph
+{
+public:
+    // class inspired from Graph lectures
+    map<string, Title> movieMap; //map
+
+    // Main functions:
+    map<string, Title> insertMap(vector<Title>& titleObjects);
+    string findMoviesMap(map<string, Title>& fullMap, Title movie);
+    void searchForFilmMap(map<string, Title>& fullMap, Title movie);
 };
 
 Title::Title()
@@ -76,13 +104,13 @@ Title::Title(int titleID, string titleType, string primaryTitle, string original
 // Load Data function. returns vector of title objects
 vector<Title> LoadData()
 {
-    ifstream data("/users/Sydney/Downloads/title.basics.tsv");
+    ifstream data("data.tsv");
 
     vector<Title> titleObjects;
 
     if (data.is_open())
     {
-        
+
         string line;
         int counter = 1;
 
@@ -166,42 +194,135 @@ vector<Title> LoadData()
 
             // pushback to vector of objects
             titleObjects.push_back(t);
-            
+
         }
         return titleObjects;
     }
 
     // print data
     // IMPORTANT: COMMENT THIS OUT IF YOU DON'T WANT IT TO PRINT
-    /*
-    for (auto iter = titleObjects.begin(); iter != titleObjects.end(); ++iter)
+    
+    /*for (auto iter = titleObjects.begin(); iter != titleObjects.end(); ++iter)
     {
         Title temp = *iter;
         cout << temp.titleID << " " << temp.titleType << " " <<  temp.primaryTitle << " " << temp.originalTitle << " " <<
             temp.primaryTitle << " " << temp.isAdult << " " << temp.startYear << " " << temp.endYear << " " <<
             temp.minutes << " " << temp.genre << endl;
-    }
-    */
+    }*/
+    
 
     data.close();
 
     return titleObjects;
 }
 
-class Node
+
+//Main drive/Quiz question functions:
+string getGenres()
 {
-public:
-    Title t;
-    Node* left;
-    Node* right;
-    int height;
-    int bf;
-    Node() : t(), left(nullptr), right(nullptr), height(0) {}
-    Node(Title _t) : t(_t), left(nullptr), right(nullptr) {}
-    Node(Title _t, Node* left, Node* right) : t(_t), left(left), right(right) {}
+    int happySad;
 
-};
+    cout << "Quiz Time!" << endl;
+    cout << "Do you need a good laugh or a good cry tonight?" << endl;
+    cout << "Enter 1 for laugh, 2 for cry." << endl;
+    cin >> happySad;
 
+    // here we will either work with happy or sad genres to save time
+    while (happySad != 1 && happySad != 2)
+    {
+        cout << "Not a valid input. Please choose 1 for a good laugh or 2 for a good cry." << endl;
+        cin >> happySad;
+    }
+    if (happySad == 1)
+    {
+        cout << "Which are you looking for?" << endl;
+        cout << "1. Simple fun" << endl << "2. ADRENALINE" << endl << "3. Mystery" << endl << "4. I said I wanted a good laugh" << endl;
+        cin >> happySad;
+        while (happySad != 1 && happySad != 2 && happySad != 3 && happySad != 4)
+        {
+            cout << "Not a valid input. Please try again." << endl;
+            cin >> happySad;
+        }
+        if (happySad == 1)
+        {
+            return "Animation";
+        }
+        if (happySad == 2)
+        {
+            return "Action";
+        }
+        if (happySad == 3)
+        {
+            return "Fantasy";
+        }
+        if (happySad == 4)
+        {
+            return "Comedy";
+        }
+    }
+    if (happySad == 2)
+    {
+        cout << "Which are you looking for?" << endl;
+        cout << "1. Love <3" << endl << "2. MURDER" << endl << "3. Historical Info" << endl << "4. Surprise me" << endl;
+        cin >> happySad;
+        while (happySad != 1 && happySad != 2 && happySad != 3 && happySad != 4)
+        {
+            cout << "Not a valid input. Please try again." << endl;
+            cin >> happySad;
+        }
+        if (happySad == 1)
+        {
+            return "Romance";
+        }
+        if (happySad == 2)
+        {
+            return "Horror";
+        }
+        if (happySad == 3)
+        {
+            return "Documentary";
+        }
+        if (happySad == 4)
+        {
+            return "Thriller";
+        }
+    }
+    return "Comedy";
+}
+
+int getYear()
+{
+    int year;
+    cout << "If you could travel to any 20th century decade, when would you visit?" << endl;
+    while (cin >> year) {
+        if (year <= 1899 || year >= 2000) {
+            cout << "Enter an appropriate decade. Answers must be from 1900 to 1999." << endl;
+        }
+        else {
+            break;
+        }
+    }
+    
+    return year;
+}
+
+int getRuntime()
+{
+    int time;
+    cout << "How much time do you want to invest in this movie? (Please enter number in minutes ranging from 1 to 180)" << endl;
+    while (cin >> time) {
+        if (time <= 0 || time >= 181) {
+            cout << "Enter an appropriate runtime. Answers must be from 1 to 180." << endl;
+        }
+        else {
+            break;
+        }
+    }
+    return time;
+}
+
+
+//AVL Functions:
 int getHeight(Node* root)
 {
     if (root == NULL)
@@ -225,7 +346,6 @@ int getBalanceFactor(Node* node)
 }
 
 //Rotations
-
 //The logic behind this was provided in Lecture 4C
 Node* rotateLeft(Node* node)
 {
@@ -266,15 +386,12 @@ Node* rotateRightLeft(Node* node)
     return rotateLeft(node);
 }
 
-// Main functions:
-
 //The base logic behind this was provided in Lecture 3D
 Node* insert(Node* root, Title tt)
 {
     // if root is null, the recursion is done and we can return
     if (root == NULL)
     {
-        //cout << "successful" << endl;
         return new Node(tt);
     }
     //check if node needs to go in left subtree
@@ -328,14 +445,15 @@ Node* insert(Node* root, Title tt)
     return root;
 }
 
-//i wrote this for proj 1 but i thought this could be used to find the movie we end up looking for?
-void select(Node* root, int id)
+//Use this to look up a specific film; this will be compared with the time it takes for the map to search for the same film
+void searchForFilmAVL(Node* root, int id) //bool? string?
 {
     bool foundName = false;
     //check if root is null
     if (root == NULL)
     {
-        cout << "unsuccessful" << endl;
+        cout << "This movie is not in the tree." << endl;
+        //return "";
         foundName = true;
     }
     //check to see where in tree
@@ -343,7 +461,6 @@ void select(Node* root, int id)
     {
         if (root == NULL)
         {
-            cout << "unsuccessful" << endl;
             foundName = true;
         }
         if (root->t.titleID == id)
@@ -359,7 +476,6 @@ void select(Node* root, int id)
             }
             else
             {
-                cout << "unsuccessful" << endl;
                 foundName = true;
             }
         }
@@ -371,207 +487,145 @@ void select(Node* root, int id)
             }
             else
             {
-                cout << "unsuccessful" << endl;
                 foundName = true;
             }
         }
     }
 }
+
 void inOrder(Node* root)
 {
-    if(root == NULL){
+    if (root == NULL) {
         return;
     }
     else
     {
-    inOrder(root->left);
-    cout << root->t.genre <<endl;
-    inOrder(root->right);
+        inOrder(root->left);
+        cout << root->t.genre << endl;
+        inOrder(root->right);
     }
 }
 
 void inOrderTrav(Node* root, vector<Title>& movies, Title tt)
 {
-    if(root == NULL){
+    if (root == NULL) {
         return;
     }
     else
     {
-    inOrderTrav(root->left, movies, tt);
-        if(root->t.genre.find(tt.genre) != string::npos)
-    {
-        //cout << "yay we found one" <<endl;
-        movies.push_back(root->t);
-    }
-    inOrderTrav(root->right, movies, tt);
+        inOrderTrav(root->left, movies, tt);
+        if (root->t.genre.find(tt.genre) != string::npos)
+        {
+            movies.push_back(root->t);
+        }
+        inOrderTrav(root->right, movies, tt);
     }
 }
 
-
-vector<Title> findMovies(Node* root, Title tt)
+vector<Title> findMoviesAVL(Node* root, Title tt)
 {
-    
+
     vector<Title> movies;
-    //cout << "start movies" <<endl;
+
     if (root == NULL)
     {
-        cout <<"this is a problem lol " <<endl;
         return movies;
     }
-    while(root!=NULL)
+    while (root != NULL)
     {
-        //cout <<root->t.genre<<endl;
-        //cout <<"Root year: " << root->t.startYear << " T year: " << tt.startYear<<endl;
         if (root->t.genre.find(tt.genre) != string::npos)
         {
-            
-            
-            //cout << "lolll " << endl;
-            if((tt.startYear - root->t.startYear) < 2 && (tt.startYear - root->t.startYear) > 0)
+            if ((tt.startYear - root->t.startYear) < 2 && (tt.startYear - root->t.startYear) > 0)
             {
                 root = root->right;
                 inOrderTrav(root, movies, tt);
                 break;
             }
-            else if((tt.startYear - root->t.startYear) > -2 && (tt.startYear - root->t.startYear) < 0)
+            else if ((tt.startYear - root->t.startYear) > -2 && (tt.startYear - root->t.startYear) < 0)
             {
                 root = root->left;
                 inOrderTrav(root, movies, tt);
                 break;
             }
-            
-            if((root->t.startYear - tt.startYear) <= 0)
+
+            if ((root->t.startYear - tt.startYear) <= 0)
             {
-                
                 root = root->right;
             }
-            else if((root->t.startYear - tt.startYear) > 0)
+            else if ((root->t.startYear - tt.startYear) > 0)
             {
-                
                 root = root->left;
-                
             }
-            
         }
-        else{
-            if((root->t.startYear - tt.startYear) <= 0)
+        else {
+            if ((root->t.startYear - tt.startYear) <= 0)
             {
-                
                 root = root->right;
             }
-            else if((root->t.startYear - tt.startYear) > 0)
+            else if ((root->t.startYear - tt.startYear) > 0)
             {
-                
                 root = root->left;
-                
             }
         }
-        
-        
+
     }
     return movies;
-    
 }
 
 Node* buildAVL(vector<Title> movies, Node* root)
 {
-    
-    for(int i = 30000; i < 50000; i++)
+    for (int i = 30000; i < 50000; i++) //int i = 30000; i < 50000; i++ // 100000
     {
         root = insert(root, movies[i]);
     }
     return root;
 }
 
-string getGenres()
+
+//Map functions:
+map<string, Title> Graph::insertMap(vector<Title>& titleObjects) //vector<Title>
 {
-    int happySad;
-    
-    
-    
-    cout<< "Quiz Time!! (Don't Worry This One's Fun lol)"<<endl;
-    cout<<"Question #?: Do you need a good laugh or a good cry tonight?" << endl;
-    cout <<"Enter 1 for laugh, 2 for cry" << endl;
-    cin >> happySad;
-    // here we will either work with happy or sad
-    while(happySad!=1 && happySad!=2)
-    {
-        cout << "excuse me i said 1 or 2" <<endl;
-        cin >> happySad;
+    map<string, Title> movieMap;
+
+    for (unsigned int i = 0; i < titleObjects.size(); i++) {
+        movieMap.insert({ titleObjects[i].originalTitle, titleObjects[i] });
     }
-    if(happySad == 1)
-    {
-        cout <<"Which are you looking for?" << endl;
-        cout << "1. Simple fun" <<endl <<"2. ADRENALINE" << endl <<"3. Mystery" << endl << "4. I said I wanted a good laugh"<< endl;
-        cin>> happySad;
-        while(happySad != 1 && happySad != 2 && happySad != 3 &&happySad != 4)
-        {
-            cout << "You're not good with directions smh. Try again pls" << endl;
-            cin>> happySad;
-        }
-        if(happySad == 1)
-        {
-            return "Animation";
-        }
-        if(happySad == 2)
-        {
-            return "Action";
-        }
-        if(happySad == 3)
-        {
-            return "Fantasy";
-        }
-        if(happySad == 4)
-        {
-            return "Comedy";
-        }
-    }
-    if(happySad == 2)
-    {
-        cout <<"Which are you looking for?" << endl;
-        cout << "1. Love <3" <<endl <<"2. MURDER" << endl <<"3. Historical Info" << endl << "4. Surprise me"<< endl;
-        cin>> happySad;
-        while(happySad != 1 && happySad != 2 && happySad != 3 &&happySad != 4)
-        {
-            cout << "You're not good with directions smh. Try again pls" << endl;
-            cin>> happySad;
-        }
-        if(happySad == 1)
-        {
-            return "Romance";
-        }
-        if(happySad == 2)
-        {
-            return "Horror";
-        }
-        if(happySad == 3)
-        {
-            return "Documentary";
-        }
-        if(happySad == 4)
-        {
-            return "Thriller";
-        }
-    }
-    return "Comedy";
     
-    
+    return movieMap;
 }
 
-int getYear()
-{
-    int year;
-    cout << "If you could travel to any 20th century decade, when would you visit?" << endl;
-    cin>>year;
-    return year;
+string Graph::findMoviesMap(map<string, Title>& fullMap, Title movie) {
+    map<string, Title>::iterator iter = fullMap.begin();
+    bool flag = false;
+    for (iter; iter != fullMap.end(); iter++) {
+    	//3-2-1 parameters if statements: genre, runtime, startyear
+    	if ( (movie.minutes - 10 <= iter->second.minutes <= movie.minutes + 10) && (iter->second.genre == movie.genre) && 
+            (movie.startYear - 10 <= iter->second.startYear <= movie.startYear + 10)) 
+        {
+            flag = true;
+    		return iter->first; //returns movie title
+    	}
+        else  { //if ((iter->second.genre == movie.genre) && (movie.startYear - 10 <= iter->second.startYear <= movie.startYear + 10))
+            flag = true;
+            return iter->first; //returns movie title
+        }
+        //else {
+        //    flag = true;
+        //    return iter->first; //returns movie title
+        //}
+    }
+    if (flag == false) {
+        cout << "No film found using those parameters! Sorry!" << endl;
+        return "";
+    }
+
+    
+
 }
 
-int getRuntime()
-{
-    int time;
-    cout << "How much time do you want to invest in this movie (Pls enter in minutes)" << endl;
-    cin >> time;
-    return time;
+void Graph::searchForFilmMap(map<string, Title>& fullMap, Title movie) { //help on return type of map.find() taken from here https://www.geeksforgeeks.org/map-find-function-in-c-stl/
+    fullMap.find(movie.originalTitle);
+    cout << movie.originalTitle << " has been found!" << endl;
 }
 
 int main()
@@ -583,14 +637,15 @@ int main()
     cout << "Loading Movie Data from IMDB Database..." << endl;
     vector<Title> titleObjects = LoadData();
     cout << "Done Loading!" << endl << endl;
-    // debugging
-    
+
 
     // welcome screen
     cout << "---------------------------------------------------------------------------------------------" << endl << endl;
     cout << "Welcome to our Movie Recommending Quiz!" << endl << endl;
     cout << "We gathered titles (movies, tv-shows, videos, etc.) from the IMDB Database and " << endl;
-    cout << "we want to recommend a title selection for you after answering a simple set of questions!" << endl << endl;
+    cout << "we want to recommend a title selection for you after answering a simple set of questions!" << endl;
+    cout << "Note: this database contains movies from all over the world, so don't be shocked if you're recommended a title" << endl;
+    cout << "that's not in English!" << endl << endl;
     cout << "Press ENTER to begin. . ." << endl;
 
     cin.ignore();
@@ -600,10 +655,7 @@ int main()
     while (selection == 1)
     {
         cout << "---------------------------------------------------------------------------------------------" << endl << endl;
-        
-        cout << "*QUIZ QUESTIONS AND STORING THE ANSWERS WILL GO HERE*" << endl << endl;
-            // maybe storing answers in an array(index is question # and value is answer)
-            // or map (key is question number, value is answer)
+
         string genre = getGenres();
         int year = getYear();
         int runTime = getRuntime();
@@ -612,6 +664,7 @@ int main()
         cout << "Which data structure do you want to use to store and search for titles?" << endl;
         cout << "1. Map" << endl;
         cout << "2. AVL Tree" << endl;
+        cout << "3. Forget my quiz answers; let's find the time it takes to search for the same movie in both containers instead." << endl;
 
         int dataChoice;
         string movieRec;
@@ -628,15 +681,26 @@ int main()
             }
             else
             {
-                
+
                 if (dataChoice == 1)
                 {
                     // Start Timer (Zach)
 
                     // Map Initialize Function (Elizabeth) <------------------------------------------
+                    cout << "Wonderful choice!" << endl;
+                    cout << "Building map..." << endl;
+                    Graph m;
+                    map<string, Title> mMap = m.insertMap(titleObjects);
+                    cout << "Map successfully built." << endl;
 
                     // Map *Search* Function (Elizabeth) <------------------------------------------
+                    Title movieObj;
+                    movieObj.genre = genre;
+                    movieObj.minutes = runTime;
+                    movieObj.startYear = year;
 
+                    movieRec = m.findMoviesMap(mMap, movieObj);
+                    
                     break;
                 }
                 else if (dataChoice == 2)
@@ -645,63 +709,70 @@ int main()
 
                     // AVL Tree Initialize Function (Sydney)
                     Node* root = NULL;
-                    cout <<"Excellent choice! " <<endl;
-                    root= buildAVL(titleObjects, root);
-                    cout <<"We built the tree" <<endl;
+                    cout << "Excellent choice! " << endl;
+                    cout << "Building AVL..." << endl;
+                    root = buildAVL(titleObjects, root);
+                    cout << "Tree successfully built." << endl;
 
                     // AVL Tree *Search* Function (Sydney) <------------------------------------------
                     Title t;
                     t.genre = genre;
                     t.minutes = runTime;
                     t.startYear = year;
-                    
-                    vector<Title> res = findMovies(root, t);
-                
-                    
-                    if(res.size() >1)
+
+                    vector<Title> res = findMoviesAVL(root, t);
+
+
+                    if (res.size() > 1) //if multiple movies fit the parameters, recommend a random movie
                     {
                         cout << "Enter a number between 1 and " << res.size() << endl;
                         int input;
-                        cin >>input;
-                        while(input < 0 || input > res.size())
+                        cin >> input;
+                        while (input < 0 || input > res.size())
                         {
-                            cout << "Between 1 and " << res.size() << " pls" <<endl;
+                            cout << "Invalid input. Please enter a number between 1 and " << res.size() << endl;
                         }
-                        movieRec = res[input -1].primaryTitle;
+                        movieRec = res[input - 1].primaryTitle;
                     }
-                    else if(res.size() == 1)
+                    else if (res.size() == 1)
                     {
                         movieRec = res[0].primaryTitle;
                     }
                     else
                     {
-                        //movieRec= "The Emoji Movie ;)";
-                        int random = rand()%10000;
-                        movieRec = titleObjects[random-1].primaryTitle;
+                        int random = rand() % 10000;
+                        movieRec = titleObjects[random - 1].primaryTitle;
                     }
-                    
+
                     break;
                 }
-                else
+                else if(dataChoice == 3)
                 {
+                    cout << "Choosing a random title now!" << endl;
+                    int random = rand() % 10000; 
+                    Title movieObj = titleObjects[random];
+                    cout << "Your random title is: " << movieObj.originalTitle << endl << endl;
+
+                    //ZACH -- TIMER STUFF GOES HERE
+                    //Call new search functions for both map and AVL here
+                    Graph m;
+                    cout << "Building map..." << endl;
+                    map<string, Title> mMap = m.insertMap(titleObjects);
+                    m.searchForFilmMap(mMap, movieObj);
+                    cout << "The time it took for the map to find " << movieObj.originalTitle << " was: _____ (units)!" << endl << endl;
+
+                    Node* root = NULL;
+                    cout << "Building AVL..." << endl;
+                    root = buildAVL(titleObjects, root);
+                    searchForFilmAVL(root, movieObj.titleID);
+                    cout << "The time it took for the AVL tree to find " << movieObj.originalTitle << " was: _____ (units)!" << endl;
+                }
+                else {
                     cout << "Invalid input. Try Again." << endl;
                     continue;
                 }
             }
         }
-
-
-        // *SEARCH* Using the answers, search for titles based on "things" (genres, decades, title etc.)
-            // if certain set of questions are answered, search for certain genre etc.
-
-            // ------------NOT SURE YET!----------------
-                // Zach's Idea: I can figure out which things to search for, add them to a container, and pass that container into your functions
-                // It would just be tricky for you all figuring out how to use that container to find titles
-                // ALSO: this is a problem we can solve towards the end or over a zoom
-
-            // if more than 1 title satisfies the search, randomly select one of them to recommend to the user
-            // or just output a list of the titles
-
 
         // output search result
         cout << endl << "The title we have recommended for you is: " << movieRec << endl << endl;
