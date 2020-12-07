@@ -109,9 +109,9 @@ vector<Title> LoadData()
 
     vector<Title> titleObjects;
 
-    if (data.is_open())
+    if 
+(data.is_open())
     {
-
         string line;
         int counter = 1;
 
@@ -142,7 +142,7 @@ vector<Title> LoadData()
             string _minutes;
             string _genre;
 
-            // clear row of header
+            // get new row
             getline(data, line);
 
             // create stringstream
@@ -197,20 +197,7 @@ vector<Title> LoadData()
             titleObjects.push_back(t);
 
         }
-        return titleObjects;
     }
-
-    // print data
-    // IMPORTANT: COMMENT THIS OUT IF YOU DON'T WANT IT TO PRINT
-
-    /*for (auto iter = titleObjects.begin(); iter != titleObjects.end(); ++iter)
-    {
-        Title temp = *iter;
-        cout << temp.titleID << " " << temp.titleType << " " <<  temp.primaryTitle << " " << temp.originalTitle << " " <<
-            temp.primaryTitle << " " << temp.isAdult << " " << temp.startYear << " " << temp.endYear << " " <<
-            temp.minutes << " " << temp.genre << endl;
-    }*/
-
 
     data.close();
 
@@ -584,7 +571,7 @@ vector<Title> findMoviesAVL(Node* root, Title tt)
 
 Node* buildAVL(vector<Title> movies, Node* root)
 {
-    for (int i = 30000; i < 50000; i++) //int i = 30000; i < 50000; i++ // 100000
+    for (int i = 30000; i < 40000; i++) 
     {
         root = insert(root, movies[i]);
     }
@@ -593,7 +580,7 @@ Node* buildAVL(vector<Title> movies, Node* root)
 
 
 //Map functions:
-map<string, Title> Graph::insertMap(vector<Title>& titleObjects) //vector<Title>
+map<string, Title> Graph::insertMap(vector<Title>& titleObjects)
 {
     map<string, Title> movieMap;
 
