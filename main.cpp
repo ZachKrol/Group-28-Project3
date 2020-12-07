@@ -597,26 +597,32 @@ map<string, Title> Graph::insertMap(vector<Title>& titleObjects) //vector<Title>
 string Graph::findMoviesMap(map<string, Title>& fullMap, Title movie) {
     map<string, Title>::iterator iter = fullMap.begin();
     bool flag = false;
+    vector<Title> multipleMovies;
     for (iter; iter != fullMap.end(); iter++) {
-    	//3-2-1 parameters if statements: genre, runtime, startyear
+    	//if movie matches 3 parameters: genre, runtime, startyear
     	if ( (movie.minutes - 10 <= iter->second.minutes <= movie.minutes + 10) && (iter->second.genre == movie.genre) && 
-            (movie.startYear - 10 <= iter->second.startYear <= movie.startYear + 10)) 
+            (movie.startYear - 5 <= iter->second.startYear <= movie.startYear + 5)) 
         {
             flag = true;
-    		return iter->first; //returns movie title
+            multipleMovies.push_back(iter->second); //in case there are multiple movies that match, push them into a vector
     	}
-        else  { //if ((iter->second.genre == movie.genre) && (movie.startYear - 10 <= iter->second.startYear <= movie.startYear + 10))
-            flag = true;
-            return iter->first; //returns movie title
-        }
-        //else {
-        //    flag = true;
-        //    return iter->first; //returns movie title
-        //}
     }
-    if (flag == false) {
-        cout << "No film found using those parameters! Sorry!" << endl;
-        return "";
+    if (flag == true) { //choose a random movie from the vector to recommend
+        int random = rand() % multipleMovies.size();
+        return multipleMovies[random].originalTitle;
+    }
+    if (flag == false) { //if no parameters match/recommendations can be made based on user input
+        cout << "We're sorry, but no film was found using those parameters! We will choose a random movie for you to watch instead." << endl;
+        int random = rand() % fullMap.size();
+        iter = fullMap.begin();
+        int counter = 1;
+        for (iter; iter != fullMap.end(); iter++) {
+            counter++;
+            if (counter == random) {
+                return iter->second.originalTitle;
+            }
+        }
+        
     }
 
     
