@@ -2,7 +2,6 @@
 Team 28
 Team Members - Elizabeth Gekhtman, Sydney Opyrchal, Zachary Krol
 Project Title - Buzzfeed Quiz Knockoff: Movie Recommender
-Last Updated: 12/7/2020 12:31pm by EG
 */
 
 #include <iomanip>
@@ -16,6 +15,8 @@ Last Updated: 12/7/2020 12:31pm by EG
 #include <algorithm>
 #include <ctype.h>
 #include <map>
+#include <chrono> 
+using namespace std::chrono; // for the timer
 using namespace std;
 
 // Title is a broad term that includes movies, shorts, tv series, video etc.
@@ -201,7 +202,7 @@ vector<Title> LoadData()
 
     // print data
     // IMPORTANT: COMMENT THIS OUT IF YOU DON'T WANT IT TO PRINT
-    
+
     /*for (auto iter = titleObjects.begin(); iter != titleObjects.end(); ++iter)
     {
         Title temp = *iter;
@@ -209,7 +210,7 @@ vector<Title> LoadData()
             temp.primaryTitle << " " << temp.isAdult << " " << temp.startYear << " " << temp.endYear << " " <<
             temp.minutes << " " << temp.genre << endl;
     }*/
-    
+
 
     data.close();
 
@@ -294,15 +295,18 @@ int getYear()
 {
     int year;
     cout << "If you could travel to any 20th century decade, when would you visit?" << endl;
-    while (cin >> year) {
-        if (year <= 1899 || year >= 2000) {
+    while (cin >> year)
+    {
+        if (year <= 1899 || year >= 2000)
+        {
             cout << "Enter an appropriate decade. Answers must be from 1900 to 1999." << endl;
         }
-        else {
+        else
+        {
             break;
         }
     }
-    
+
     return year;
 }
 
@@ -310,11 +314,14 @@ int getRuntime()
 {
     int time;
     cout << "How much time do you want to invest in this movie? (Please enter number in minutes ranging from 1 to 180)" << endl;
-    while (cin >> time) {
-        if (time <= 0 || time >= 181) {
+    while (cin >> time)
+    {
+        if (time <= 0 || time >= 181)
+        {
             cout << "Enter an appropriate runtime. Answers must be from 1 to 180." << endl;
         }
-        else {
+        else
+        {
             break;
         }
     }
@@ -495,7 +502,8 @@ void searchForFilmAVL(Node* root, int id) //bool? string?
 
 void inOrder(Node* root)
 {
-    if (root == NULL) {
+    if (root == NULL)
+    {
         return;
     }
     else
@@ -508,7 +516,8 @@ void inOrder(Node* root)
 
 void inOrderTrav(Node* root, vector<Title>& movies, Title tt)
 {
-    if (root == NULL) {
+    if (root == NULL)
+    {
         return;
     }
     else
@@ -557,7 +566,8 @@ vector<Title> findMoviesAVL(Node* root, Title tt)
                 root = root->left;
             }
         }
-        else {
+        else
+        {
             if ((root->t.startYear - tt.startYear) <= 0)
             {
                 root = root->right;
@@ -587,49 +597,57 @@ map<string, Title> Graph::insertMap(vector<Title>& titleObjects) //vector<Title>
 {
     map<string, Title> movieMap;
 
-    for (unsigned int i = 0; i < titleObjects.size(); i++) {
+    for (unsigned int i = 0; i < titleObjects.size(); i++)
+    {
         movieMap.insert({ titleObjects[i].originalTitle, titleObjects[i] });
     }
-    
+
     return movieMap;
 }
 
-string Graph::findMoviesMap(map<string, Title>& fullMap, Title movie) {
+string Graph::findMoviesMap(map<string, Title>& fullMap, Title movie)
+{
     map<string, Title>::iterator iter = fullMap.begin();
     bool flag = false;
     vector<Title> multipleMovies;
-    for (iter; iter != fullMap.end(); iter++) {
-    	//if movie matches 3 parameters: genre, runtime, startyear
-    	if ( (movie.minutes - 10 <= iter->second.minutes <= movie.minutes + 10) && (iter->second.genre == movie.genre) && 
-            (movie.startYear - 5 <= iter->second.startYear <= movie.startYear + 5)) 
+    for (iter; iter != fullMap.end(); iter++)
+    {
+        //if movie matches 3 parameters: genre, runtime, startyear
+        if ((movie.minutes - 10 <= iter->second.minutes <= movie.minutes + 10) && (iter->second.genre == movie.genre) &&
+            (movie.startYear - 5 <= iter->second.startYear <= movie.startYear + 5))
         {
             flag = true;
             multipleMovies.push_back(iter->second); //in case there are multiple movies that match, push them into a vector
-    	}
+        }
     }
-    if (flag == true) { //choose a random movie from the vector to recommend
+    if (flag == true)
+    { //choose a random movie from the vector to recommend
         int random = rand() % multipleMovies.size();
         return multipleMovies[random].originalTitle;
     }
-    if (flag == false) { //if no parameters match/recommendations can be made based on user input
+    if (flag == false)
+    { //if no parameters match/recommendations can be made based on user input
         cout << "We're sorry, but no film was found using those parameters! We will choose a random movie for you to watch instead." << endl;
         int random = rand() % fullMap.size();
         iter = fullMap.begin();
         int counter = 1;
-        for (iter; iter != fullMap.end(); iter++) {
+        for (iter; iter != fullMap.end(); iter++)
+        {
             counter++;
-            if (counter == random) {
+            if (counter == random)
+            {
                 return iter->second.originalTitle;
             }
         }
-        
+
     }
 
-    
+
 
 }
 
-void Graph::searchForFilmMap(map<string, Title>& fullMap, Title movie) { //help on return type of map.find() taken from here https://www.geeksforgeeks.org/map-find-function-in-c-stl/
+void Graph::searchForFilmMap(map<string, Title>& fullMap, Title movie)
+{ //help on return type of map.find() taken from here https://www.geeksforgeeks.org/map-find-function-in-c-stl/
     fullMap.find(movie.originalTitle);
     cout << movie.originalTitle << " has been found!" << endl;
 }
@@ -691,6 +709,7 @@ int main()
                 if (dataChoice == 1)
                 {
                     // Start Timer (Zach)
+                    auto startTime = high_resolution_clock::now();
 
                     // Map Initialize Function (Elizabeth) <------------------------------------------
                     cout << "Wonderful choice!" << endl;
@@ -706,12 +725,18 @@ int main()
                     movieObj.startYear = year;
 
                     movieRec = m.findMoviesMap(mMap, movieObj);
-                    
+
+                    // End Timer (Zach)
+                    auto stopTime = high_resolution_clock::now();
+                    auto timeDuration = duration_cast<seconds>(stopTime - startTime);
+                    cout << "Time it took to store and search data using Map: " << timeDuration.count() << " seconds" << endl << endl;
+
                     break;
                 }
                 else if (dataChoice == 2)
                 {
                     // Start Timer (Zach)
+                    auto startTime = high_resolution_clock::now();
 
                     // AVL Tree Initialize Function (Sydney)
                     Node* root = NULL;
@@ -750,30 +775,56 @@ int main()
                         movieRec = titleObjects[random - 1].primaryTitle;
                     }
 
+                    // End Timer
+                    auto stopTime = high_resolution_clock::now();
+                    auto timeDuration = duration_cast<seconds>(stopTime - startTime);
+                    cout << "Time it took to store and search data using AVL Tree: " << timeDuration.count() << " seconds" << endl << endl;
+
                     break;
                 }
-                else if(dataChoice == 3)
+                else if (dataChoice == 3)
                 {
+                    // Select random title to search
                     cout << "Choosing a random title now!" << endl;
-                    int random = rand() % titleObjects.size(); 
+                    int random = rand() % titleObjects.size();
                     Title movieObj = titleObjects[random];
                     cout << "Your random title is: " << movieObj.originalTitle << endl << endl;
 
-                    //ZACH -- TIMER STUFF GOES HERE
-                    //Call new search functions for both map and AVL here
+                    // Start Timer Map
+                    auto startTimeMap = high_resolution_clock::now();
+
+                    // Build and search in Map
                     Graph m;
                     cout << "Building map..." << endl;
                     map<string, Title> mMap = m.insertMap(titleObjects);
                     m.searchForFilmMap(mMap, movieObj);
-                    cout << "The time it took for the map to find " << movieObj.originalTitle << " was: _____ (units)!" << endl << endl;
 
+                    // End Timer Map
+                    auto stopTimeMap = high_resolution_clock::now();
+                    auto timeDurationMap = duration_cast<seconds>(stopTimeMap - startTimeMap);
+                    cout << "The time it took for the map to find " << movieObj.originalTitle << " was: " << 
+                        timeDurationMap.count() << " seconds!" << endl << endl;
+
+                    // Start Timer AVL Tree
+                    auto startTimeAVL = high_resolution_clock::now();
+
+                    // Build and Search in AVL
                     Node* root = NULL;
                     cout << "Building AVL..." << endl;
                     root = buildAVL(titleObjects, root);
                     searchForFilmAVL(root, movieObj.titleID);
-                    cout << "The time it took for the AVL tree to find " << movieObj.originalTitle << " was: _____ (units)!" << endl;
+                    cout << movieObj.originalTitle << " has been found!" << endl;
+
+                    // End Timer AVL
+                    auto stopTimeAVL = high_resolution_clock::now();
+                    auto timeDurationAVL = duration_cast<seconds>(stopTimeAVL - startTimeAVL);
+                    cout << "The time it took for the AVL Tree to find " << movieObj.originalTitle << " was: " <<
+                        timeDurationAVL.count() << " seconds!" << endl << endl;
+
+                    break;
                 }
-                else {
+                else
+                {
                     cout << "Invalid input. Try Again." << endl;
                     continue;
                 }
@@ -781,13 +832,8 @@ int main()
         }
 
         // output search result
-        cout << endl << "The title we have recommended for you is: " << movieRec << endl << endl;
-
-        // end timer and display time
-        if (dataChoice == 1)
-            cout << "Time it took to store and search data using Map: " << "*INPUT TIMER RESULT HERE*" << endl << endl;
-        if (dataChoice == 2)
-            cout << "Time it took to store and search data using AVL Tree: " << "*INPUT TIMER RESULT HERE*" << endl << endl;
+        if (dataChoice != 3)
+            cout << endl << "The title we have recommended for you is: " << movieRec << endl << endl;
 
         // ask if they want to take quiz again
         cout << "Enter \"1\" to take the quiz again" << endl;
