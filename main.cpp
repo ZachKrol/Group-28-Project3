@@ -398,7 +398,7 @@ void inOrderTrav(Node* root, vector<Title>& movies, Title tt)
     else
     {
     inOrderTrav(root->left, movies, tt);
-    if(root->t.genre.find(tt.genre) != string::npos)
+        if(root->t.genre.find(tt.genre) != string::npos)
     {
         //cout << "yay we found one" <<endl;
         movies.push_back(root->t);
@@ -654,12 +654,9 @@ int main()
                     t.genre = genre;
                     t.minutes = runTime;
                     t.startYear = year;
-                    //cout << "OG ROOT : " << root->t.titleID<<endl;
-                    //inOrder(root);
+                    
                     vector<Title> res = findMovies(root, t);
-                    //cout <<"Number of options: " << res.size() << endl;
-                    //debugging stuff
-                    //cout << "Library size " << titleObjects.size() << endl;
+                
                     
                     if(res.size() >1)
                     {
@@ -678,12 +675,11 @@ int main()
                     }
                     else
                     {
-                        movieRec= "The Emoji Movie ;)";
+                        //movieRec= "The Emoji Movie ;)";
+                        int random = rand()%10000;
+                        movieRec = titleObjects[random-1].primaryTitle;
                     }
                     
-                    
-                    
-
                     break;
                 }
                 else
