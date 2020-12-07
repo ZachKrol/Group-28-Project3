@@ -2,6 +2,7 @@
 Team 28
 Team Members - Elizabeth Gekhtman, Sydney Opyrchal, Zachary Krol
 Project Title - Buzzfeed Quiz Knockoff: Movie Recommender
+Last Updated: 12/4/2020 11:52pm by ZK
 */
 
 #include <iomanip>
@@ -14,9 +15,7 @@ Project Title - Buzzfeed Quiz Knockoff: Movie Recommender
 #include <iterator>
 #include <algorithm>
 #include <ctype.h>
-#include <chrono>
 using namespace std;
-using namespace std::chrono; // for the timer
 
 // Title is a broad term that includes movies, shorts, tv series, video etc.
 struct Title
@@ -77,7 +76,7 @@ Title::Title(int titleID, string titleType, string primaryTitle, string original
 // Load Data function. returns vector of title objects
 vector<Title> LoadData()
 {
-    ifstream data("data.tsv");
+    ifstream data("/users/Sydney/Downloads/title.basics.tsv");
 
     vector<Title> titleObjects;
 
@@ -185,6 +184,7 @@ vector<Title> LoadData()
     */
 
     data.close();
+
     return titleObjects;
 }
 
@@ -400,6 +400,7 @@ void inOrderTrav(Node* root, vector<Title>& movies, Title tt)
     inOrderTrav(root->left, movies, tt);
     if(root->t.genre.find(tt.genre) != string::npos)
     {
+        //cout << "yay we found one" <<endl;
         movies.push_back(root->t);
     }
     inOrderTrav(root->right, movies, tt);
@@ -411,7 +412,7 @@ vector<Title> findMovies(Node* root, Title tt)
 {
     
     vector<Title> movies;
-    cout << "start movies" <<endl;
+    //cout << "start movies" <<endl;
     if (root == NULL)
     {
         cout <<"this is a problem lol " <<endl;
@@ -420,11 +421,12 @@ vector<Title> findMovies(Node* root, Title tt)
     while(root!=NULL)
     {
         //cout <<root->t.genre<<endl;
-        cout <<"Root year: " << root->t.startYear << " T year: " << tt.startYear<<endl;
+        //cout <<"Root year: " << root->t.startYear << " T year: " << tt.startYear<<endl;
         if (root->t.genre.find(tt.genre) != string::npos)
         {
             
             
+            //cout << "lolll " << endl;
             if((tt.startYear - root->t.startYear) < 2 && (tt.startYear - root->t.startYear) > 0)
             {
                 root = root->right;
@@ -438,36 +440,33 @@ vector<Title> findMovies(Node* root, Title tt)
                 break;
             }
             
-            /*movies.push_back(root->t);
             if((root->t.startYear - tt.startYear) <= 0)
             {
-                //cout <<"Root dif here: " << root->t.startYear << " "<< tt.startYear<<endl;
-                //cout << "ROOT DIF " <<(root->t.startYear - tt.startYear) <<endl;
+                
                 root = root->right;
             }
             else if((root->t.startYear - tt.startYear) > 0)
             {
-                //cout <<"Root dif here: " << root->t.startYear << " "<< tt.startYear<<endl;
+                
                 root = root->left;
                 
-            }*/
+            }
             
         }
         else{
-            if((root->t.startYear - tt.startYear) < 0)
+            if((root->t.startYear - tt.startYear) <= 0)
             {
-                //cout <<"Root dif here: " << root->t.startYear << " "<< tt.startYear<<endl;
-                //cout << "ROOT DIF " <<(root->t.startYear - tt.startYear) <<endl;
+                
                 root = root->right;
             }
-            else if((root->t.startYear - tt.startYear) >= 0)
+            else if((root->t.startYear - tt.startYear) > 0)
             {
-                //cout <<"Root dif here: " << root->t.startYear << " "<< tt.startYear<<endl;
+                
                 root = root->left;
                 
             }
         }
-        //cout << "vagina" <<endl;
+        
         
     }
     return movies;
@@ -476,19 +475,9 @@ vector<Title> findMovies(Node* root, Title tt)
 
 Node* buildAVL(vector<Title> movies, Node* root)
 {
-    //Node* root = NULL;
-    int loopCounter = movies.size();
-    int counter = 1;
-    for (int i = 0; i < loopCounter; i++)
+    
+    for(int i = 0; i < movies.size(); i++)
     {
-        // percent loaded
-        int singlePercent = loopCounter / 100;
-        int check = i / singlePercent;
-        if (check == counter)
-        {
-            cout << counter << "%" << endl;
-            counter++;
-        }
         root = insert(root, movies[i]);
     }
     return root;
@@ -595,7 +584,7 @@ int main()
     vector<Title> titleObjects = LoadData();
     cout << "Done Loading!" << endl << endl;
     // debugging
-    cout << "Lib size " << titleObjects.size() << endl;
+    
 
     // welcome screen
     cout << "---------------------------------------------------------------------------------------------" << endl << endl;
@@ -625,6 +614,7 @@ int main()
         cout << "2. AVL Tree" << endl;
 
         int dataChoice;
+        string movieRec;
         while (true)
         {
             // this code prevents infinite loop on invalid char input.
@@ -638,26 +628,20 @@ int main()
             }
             else
             {
+                
                 if (dataChoice == 1)
                 {
                     // Start Timer (Zach)
-                    auto startTime = high_resolution_clock::now();
 
                     // Map Initialize Function (Elizabeth) <------------------------------------------
 
                     // Map *Search* Function (Elizabeth) <------------------------------------------
-                    
-                    // End Timer (Zach)
-                    auto stopTime = high_resolution_clock::now();
-                    auto timeDuration = duration_cast<seconds>(stopTime - startTime);
-                    cout << "Time it took to store and search data using Map: " << timeDuration.count() << " seconds" << endl << endl;
 
                     break;
                 }
                 else if (dataChoice == 2)
                 {
                     // Start Timer (Zach)
-                    auto startTime = high_resolution_clock::now();
 
                     // AVL Tree Initialize Function (Sydney)
                     Node* root = NULL;
@@ -670,17 +654,34 @@ int main()
                     t.genre = genre;
                     t.minutes = runTime;
                     t.startYear = year;
-                    cout << "OG ROOT : " << root->t.titleID<<endl;
+                    //cout << "OG ROOT : " << root->t.titleID<<endl;
                     //inOrder(root);
                     vector<Title> res = findMovies(root, t);
-                    cout <<"Number of options: " << res.size() << endl;
+                    //cout <<"Number of options: " << res.size() << endl;
                     //debugging stuff
-                    cout << "Library size " << titleObjects.size() << endl;
+                    //cout << "Library size " << titleObjects.size() << endl;
                     
-                    // End Timer (Zach)
-                    auto stopTime = high_resolution_clock::now();
-                    auto timeDuration = duration_cast<seconds>(stopTime - startTime);
-                    cout << "Time it took to store and search data using Map: " << timeDuration.count() << " seconds" << endl << endl;
+                    if(res.size() >1)
+                    {
+                        cout << "Enter a number between 1 and " << res.size() << endl;
+                        int input;
+                        cin >>input;
+                        while(input < 0 || input > res.size())
+                        {
+                            cout << "Between 1 and " << res.size() << " pls" <<endl;
+                        }
+                        movieRec = res[input -1].primaryTitle;
+                    }
+                    else if(res.size() == 1)
+                    {
+                        movieRec = res[0].primaryTitle;
+                    }
+                    else
+                    {
+                        movieRec= "The Emoji Movie ;)";
+                    }
+                    
+                    
                     
 
                     break;
@@ -693,9 +694,27 @@ int main()
             }
         }
 
-        // output search result
-        cout << endl << "The title we have recommended for you is: " << "*REPLACE THIS WITH SEARCH RESULT*" << endl << endl;
 
+        // *SEARCH* Using the answers, search for titles based on "things" (genres, decades, title etc.)
+            // if certain set of questions are answered, search for certain genre etc.
+
+            // ------------NOT SURE YET!----------------
+                // Zach's Idea: I can figure out which things to search for, add them to a container, and pass that container into your functions
+                // It would just be tricky for you all figuring out how to use that container to find titles
+                // ALSO: this is a problem we can solve towards the end or over a zoom
+
+            // if more than 1 title satisfies the search, randomly select one of them to recommend to the user
+            // or just output a list of the titles
+
+
+        // output search result
+        cout << endl << "The title we have recommended for you is: " << movieRec << endl << endl;
+
+        // end timer and display time
+        if (dataChoice == 1)
+            cout << "Time it took to store and search data using Map: " << "*INPUT TIMER RESULT HERE*" << endl << endl;
+        if (dataChoice == 2)
+            cout << "Time it took to store and search data using AVL Tree: " << "*INPUT TIMER RESULT HERE*" << endl << endl;
 
         // ask if they want to take quiz again
         cout << "Enter \"1\" to take the quiz again" << endl;
